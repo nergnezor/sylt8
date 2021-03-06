@@ -87,11 +87,15 @@ class _MyRiveAnimationState extends State<MyRiveAnimation> {
       children: [
         Expanded(
           child: GestureDetector(
+            onVerticalDragUpdate: (details) {
+              Shape shape = _artboard.children.first;
+              shape.scaleY += (details.delta.dy / 100);
+            },
             onTap: () {
               // final snackBar = SnackBar(content: Text("Tap"));
               print("tap");
               Shape shape = _artboard.children.first;
-              shape.scaleY *= 0.99;
+              // shape.scaleY *= 0.99;
               doit();
               // ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
