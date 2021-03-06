@@ -1,10 +1,19 @@
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
 
+import 'game.dart';
 import 'wiper_controller.dart';
 
-void main() => runApp(MyApp());
+// void main() => runApp(MyApp());
+void main() {
+  runApp(
+    GameWidget(
+      game: MyGame(),
+    ),
+  );
+}
 
 class MyApp extends StatelessWidget {
   @override
