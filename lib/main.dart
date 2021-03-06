@@ -60,7 +60,7 @@ class _MyRiveAnimationState extends State<MyRiveAnimation> {
     if (file.import(bytes)) {
       setState(() => _artboard = file.mainArtboard
         ..addController(
-          SimpleAnimation('idle'),
+          SimpleAnimation('Animation 1'),
         ));
     }
   }
@@ -88,16 +88,13 @@ class _MyRiveAnimationState extends State<MyRiveAnimation> {
         Expanded(
           child: GestureDetector(
             onVerticalDragUpdate: (details) {
-              Shape shape = _artboard.children.first;
+              print("tap");
+              Shape shape = _artboard.children.firstWhere(
+                  (element) => element.coreType == Shape().coreType);
               shape.scaleY += (details.delta.dy / 100);
             },
             onTap: () {
-              // final snackBar = SnackBar(content: Text("Tap"));
-              print("tap");
-              Shape shape = _artboard.children.first;
-              // shape.scaleY *= 0.99;
               doit();
-              // ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
             child: _artboard != null
                 ? Rive(
