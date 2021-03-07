@@ -98,5 +98,9 @@ jobs:
           asset_name: Fling.apk
 
           asset_content_type: application/zip
+      - name: Slack Notification       
+        uses: rtCamp/action-slack-notify@v2       
+        env: 
+            SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
 
