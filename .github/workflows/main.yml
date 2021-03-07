@@ -60,7 +60,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         with:
           tag_name: ${{ github.run_number }}
-          release_name: Release ${{ github.run_id}} 
+          release_name: Release ${{ github.run_number}} 
       - name: Upload Release APK
         id: upload_release_asset
         uses: actions/upload-release-asset@v1.0.1
@@ -71,10 +71,10 @@ jobs:
           asset_path: apk/app-release.apk
           asset_name: Fling.apk
           asset_content_type: application/zip
-      - name: Slack Notification       
-        uses: rtCamp/action-slack-notify@v2       
-        env: 
+      - name: Slack notification
+        env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_MESSAGE: https://github.com/nergnezor/flingjammer/releases/download/${{ github.run_number }}/Fling.apk
-
+        uses: Ilshidur/action-slack@2.0.2
+        with:
+          args: '${{ steps.create_release.outputs.upload_url }}' # Optional
 
