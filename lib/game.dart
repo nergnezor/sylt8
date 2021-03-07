@@ -36,7 +36,7 @@ class Disc extends PositionComponent {
   void render(Canvas c) {
     super.render(c);
     white.style = PaintingStyle.stroke;
-    white.strokeWidth = math.pow(life, 4) * 20;
+    white.strokeWidth = math.pow(life, 4) * 10;
     white.color = white.color.withOpacity(life);
     c.drawOval(size.toRect(), white);
     // c.drawRect(const Rect.fromLTWH(0, 0, 3, 3), red);
@@ -54,6 +54,7 @@ class Disc extends PositionComponent {
         remove();
       }
     }
+    else if (life < 1) life +=0.01;
   }
 
   @override
