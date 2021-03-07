@@ -76,5 +76,5 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         uses: Ilshidur/action-slack@2.0.2
         with:
-          args: 'https://github.com/nergnezor/flingjammer/releases/download/${{ github.run_number }}/Fling.apk' # Optional
+          args: 'https://github.com/nergnezor/flingjammer/releases/download/${{ github.run_number }}/Fling.apk @channel' # Optional
 
