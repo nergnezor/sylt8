@@ -25,7 +25,7 @@ class Disc extends PositionComponent {
   var speed = 1.0;
   var speedX = 1.0;
   bool flying = false;
-  var life = 1.0;
+  var life = 0.1;
   static const radius = 100.0;
 
   static Paint white = Palette.white.paint;
