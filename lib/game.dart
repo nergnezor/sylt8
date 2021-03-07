@@ -22,10 +22,13 @@ class Palette {
 }
 
 class Disc extends PositionComponent {
-  static const speed = 0.25;
-  static const squareSize = 128.0;
+  var speed = 1.0;
+  var speedX = 1.0;
+  bool flying = false;
+  var life = 1.0;
+  static const radius = 80.0;
 
-  static Paint white = Palette.white.paint;
+  static Paint white = Palette.red.paint;
   static Paint red = Palette.red.paint;
   static Paint blue = Palette.blue.paint;
 
@@ -33,7 +36,8 @@ class Disc extends PositionComponent {
   void render(Canvas c) {
     super.render(c);
     white.style = PaintingStyle.stroke;
-    white.strokeWidth = 2;
+    white.strokeWidth = 20 * life;
+    white.color = white.color.withOpacity(life);
     c.drawOval(size.toRect(), white);
     // c.drawRect(const Rect.fromLTWH(0, 0, 3, 3), red);
     // c.drawRect(Rect.fromLTWH(width / 2, height / 2, 3, 3), blue);
@@ -42,55 +46,95 @@ class Disc extends PositionComponent {
   @override
   void update(double dt) {
     super.update(dt);
-    angle += speed * dt;
-    angle %= 2 * math.pi;
+    position.y += speed;
+    speed *= 0.99;
+    life -= 0.001;
+    if (flying && life <= 0) {
+      remove();
+    }
   }
 
   @override
   void onMount() {
     super.onMount();
-    size = Vector2.all(squareSize);
+    size = Vector2.all(radius);
     anchor = Anchor.center;
+  }
+
+  void changeSpeed(double s) {
+    if (s.abs() > speed.abs()) speed = s / 100;
+    print(s);
   }
 }
 
 class MyGame extends BaseGame
     with DoubleTapDetector, TapDetector, VerticalDragDetector {
   bool running = true;
-
+  Disc currentDisc;
+  FPSCounter fpsCounter;
   MyGame() {
     add(Disc()
       ..x = 100
       ..y = 100);
   }
-  bool isTouched(Offset pos) {
+  Component isTouched(Offset pos) {
     final touchArea = Rect.fromCenter(
       center: pos,
       width: 20,
       height: 20,
     );
 
-    final handled = components.any((c) {
+    // final handled = components.firstWhere((c) {
+    for (var c in components) {
       if (c is PositionComponent && c.toRect().overlaps(touchArea)) {
-        remove(c);
-        return true;
+        return c;
       }
-    });
-    return false;
+      // remove(c);
+      // return true;
+    }
+    // });
+    return null;
   }
 
   @override
-  void onVerticalDragUpdate(DragUpdateDetails details) {}
+  void onVerticalDragDown(DragDownDetails details) {}
   @override
-  void onTapUp(TapUpDetails details) {}
-  @override
-  void onTapDown(TapDownDetails details) {
-    final handled = isTouched(details.localPosition);
-    if (!handled) {
+  void onVerticalDragStart(DragStartDetails details) {
+    var disc = isTouched(details.localPosition);
+    if (disc == null) {
       add(Disc()
         ..x = details.localPosition.dx
         ..y = details.localPosition.dy);
     }
+  }
+
+  @override
+  void onVerticalDragEnd(DragEndDetails details) {
+    currentDisc?.flying = true;
+    // currentDisc.speed = details.velocity.pixelsPerSecond.dy;
+    currentDisc?.changeSpeed(details.velocity.pixelsPerSecond.dy);
+  }
+
+  @override
+  void onVerticalDragUpdate(DragUpdateDetails details) {
+    var disc = isTouched(details.localPosition);
+    if (disc == null) return;
+    currentDisc = (disc as Disc);
+    currentDisc.position =
+        Vector2(details.localPosition.dx, details.localPosition.dy);
+    // (disc as Disc)?.changeSpeed(details.delta.dy);
+    // print(details.localPosition);
+  }
+
+  @override
+  void onTapUp(TapUpDetails details) {
+    print(details);
+  }
+
+  @override
+  void onTapDown(TapDownDetails details) {
+    print("Tap down");
+    final c = isTouched(details.localPosition);
   }
 
   @override
