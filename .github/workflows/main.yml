@@ -77,7 +77,7 @@ jobs:
 
           tag_name: ${{ github.ref }}
 
-          release_name: Release ${{ github.ref }} 
+          release_name: Release ${{ github.run_id}} 
 
       - name: Upload Release APK
 
