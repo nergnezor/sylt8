@@ -58,9 +58,10 @@ class Disc extends PositionComponent {
 
   @override
   void onMount() {
-    super.onMount();
+     anchor = Anchor.center;
+ super.onMount();
     size = Vector2.all(radius);
-    anchor = Anchor.center;
+  
   }
 
   void changeSpeed(double s) {
@@ -76,7 +77,7 @@ class MyGame extends BaseGame
   FPSCounter fpsCounter;
   MyGame() {
     add(Disc()
-      ..x = 100
+      ..x = 200
       ..y = 100);
   }
   Component isTouched(Offset pos) {
