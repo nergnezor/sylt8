@@ -61,6 +61,7 @@ class Disc extends PositionComponent {
      anchor = Anchor.center;
  super.onMount();
     size = Vector2.all(radius);
+position = Vector2(200,600);
   
   }
 
