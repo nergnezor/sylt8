@@ -75,7 +75,7 @@ jobs:
 
         with:
 
-          tag_name: ${{ github.ref }}
+          tag_name: ${{ github.run_number }}
 
           release_name: Release ${{ github.run_id}} 
 
