@@ -103,11 +103,7 @@ class MyGame extends BaseGame
   @override
   void onVerticalDragStart(DragStartDetails details) {
     var disc = isTouched(details.localPosition);
-    if (disc == null) {
-      add(Disc()
-        ..x = details.localPosition.dx
-        ..y = details.localPosition.dy);
-    }
+    
   }
 
   @override
@@ -115,7 +111,9 @@ class MyGame extends BaseGame
     currentDisc?.flying = true;
     // currentDisc.speed = details.velocity.pixelsPerSecond.dy;
     currentDisc?.changeSpeed(details.velocity.pixelsPerSecond.dy);
-  }
+ 
+      add(Disc());
+    }
 
   @override
   void onVerticalDragUpdate(DragUpdateDetails details) {
