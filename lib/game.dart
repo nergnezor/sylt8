@@ -60,8 +60,9 @@ class Disc extends PositionComponent {
       speed *= 0.97;
       life -= 0.001;
       if (life <= 0) {
-        remove();
-        add(Disc());
+        flying=false;
+      //  remove();
+     //   add(Disc());
       }
     }
     else if (life < 1) life +=0.01;
