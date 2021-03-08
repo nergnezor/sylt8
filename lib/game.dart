@@ -58,7 +58,7 @@ class Disc extends PositionComponent {
         speed = Offset(-speed.dx, speed.dy);
       }
       speed *= 0.97;
-      life -= 0.001;
+      life -= 0.01;
       if (life <= 0) {
         flying = false;
         position = spawnPos;
@@ -78,6 +78,7 @@ class Disc extends PositionComponent {
 
   void changeSpeed(Offset o, int div) {
     speed = Offset(o.dx / div, o.dy / div);
+    life += speed.distance;
   }
 }
 
@@ -126,6 +127,7 @@ class MyGame extends BaseGame
     currentDisc = (disc as Disc);
     currentDisc.position =
         Vector2(details.localPosition.dx, details.localPosition.dy);
+        currentDisc.flying=false;
   }
 
   @override
