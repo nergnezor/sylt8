@@ -36,8 +36,8 @@ class Disc extends PositionComponent {
   void render(Canvas c) {
     super.render(c);
     palette.style = PaintingStyle.stroke;
-    palette.strokeWidth = math.pow(life, 4) * 10;
-    palette.color = palette.color.withOpacity(life);
+    palette.strokeWidth = life*10;
+   // palette.color = palette.color.withOpacity(life);
     c.drawOval(size.toRect(), palette);
     // c.drawRect(const Rect.fromLTWH(0, 0, 3, 3), red);
     // c.drawRect(Rect.fromLTWH(width / 2, height / 2, 3, 3), blue);
@@ -78,7 +78,7 @@ class Disc extends PositionComponent {
 
   void changeSpeed(Offset o, int div) {
     speed = Offset(o.dx / div, o.dy / div);
-    life += speed.distance;
+    life += speed.distance/100;
   }
 }
 
