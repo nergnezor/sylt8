@@ -27,8 +27,8 @@ class Disc extends PositionComponent {
   bool flying = false;
   var life = 0.1;
   static const radius = 100.0;
-
-  static Paint palette = Palette. white.paint;
+  static Vector2 spawnPos = Vector2(200, 700);
+  static Paint palette = Palette.white.paint;
   static Paint red = Palette.red.paint;
   static Paint blue = Palette.blue.paint;
 
@@ -49,36 +49,35 @@ class Disc extends PositionComponent {
     if (flying) {
       position.y += speed.dy;
       position.x += speed.dx;
-      if (position.y <0){
-        position.y=0;
-        speed=Offset(speed.dx, -speed.dy);
+      if (position.y < 0) {
+        position.y = 0;
+        speed = Offset(speed.dx, -speed.dy);
       }
-      if (position.x <0){
-              position.x=0;
-              speed=Offset(-speed.dx, speed.dy);
-            }
+      if (position.x < 0) {
+        position.x = 0;
+        speed = Offset(-speed.dx, speed.dy);
+      }
       speed *= 0.97;
       life -= 0.001;
       if (life <= 0) {
-        flying=false;
-      //  remove();
-     //   add(Disc());
+        flying = false;
+        position = spawnPos;
+        //  remove();
+        //   add(Disc());
       }
-    }
-    else if (life < 1) life +=0.01;
+    } else if (life < 1) life += 0.01;
   }
 
   @override
   void onMount() {
-     anchor = Anchor.center;
- super.onMount();
+    anchor = Anchor.center;
+    super.onMount();
     size = Vector2.all(radius);
-position = Vector2(200,700);
-  
+    position = spawnPos;
   }
 
-  void changeSpeed(Offset o,int div) {
-    speed = Offset(o.dx/div,o.dy/div);
+  void changeSpeed(Offset o, int div) {
+    speed = Offset(o.dx / div, o.dy / div);
   }
 }
 
@@ -87,7 +86,7 @@ class MyGame extends BaseGame
   bool running = true;
   var frameRate = 120;
   Disc currentDisc;
-  
+
   MyGame() {
     add(Disc()
       ..x = 200
@@ -100,7 +99,6 @@ class MyGame extends BaseGame
       height: 20,
     );
 
-   
     for (var c in components) {
       if (c is PositionComponent && c.toRect().overlaps(touchArea)) {
         return c;
@@ -109,12 +107,16 @@ class MyGame extends BaseGame
     return null;
   }
 
+  // @override
+  // void onResize(Vector2 canvasSize) {
+  //   super.onResize(canvasSize);
+  // }
+
   @override
   void onVerticalDragEnd(DragEndDetails details) {
     currentDisc?.flying = true;
     currentDisc?.changeSpeed(details.velocity.pixelsPerSecond, frameRate);
- 
-    }
+  }
 
   @override
   void onVerticalDragUpdate(DragUpdateDetails details) {
