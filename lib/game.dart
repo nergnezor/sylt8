@@ -40,6 +40,7 @@ class Disc extends PositionComponent {
     //size = 100/life;
    // palette.color = palette.color.withOpacity(life);
     var s=size;
+    
     //s.x -= speed.dy.abs();
     //s.x=s.x.clamp(10,100);
     c.drawOval(s.toRect(), palette);
