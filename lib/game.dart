@@ -28,17 +28,17 @@ class Disc extends PositionComponent {
   var life = 0.1;
   static const radius = 100.0;
 
-  static Paint white = Palette.white.paint;
+  static Paint palette = Palette. white.paint;
   static Paint red = Palette.red.paint;
   static Paint blue = Palette.blue.paint;
 
   @override
   void render(Canvas c) {
     super.render(c);
-    white.style = PaintingStyle.stroke;
-    white.strokeWidth = math.pow(life, 4) * 10;
-    white.color = white.color.withOpacity(life);
-    c.drawOval(size.toRect(), white);
+    palette.style = PaintingStyle.stroke;
+    palette.strokeWidth = math.pow(life, 4) * 10;
+    palette.color = palette.color.withOpacity(life);
+    c.drawOval(size.toRect(), palette);
     // c.drawRect(const Rect.fromLTWH(0, 0, 3, 3), red);
     // c.drawRect(Rect.fromLTWH(width / 2, height / 2, 3, 3), blue);
   }
@@ -48,8 +48,11 @@ class Disc extends PositionComponent {
     super.update(dt);
     if (flying) {
       position.y += speed.dy;
- position.x += speed.dx;
-
+      position.x += speed.dx;
+      if (position.y <0){
+        position.y=0;
+        speed.dy *= -1;
+      }
       speed *= 0.97;
       life -= 0.001;
       if (life <= 0) {
