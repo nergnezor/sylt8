@@ -58,7 +58,7 @@ class Disc extends PositionComponent {
         position.y = 0;
         speed = Offset(speed.dx, -speed.dy);
       }
-      if (position.x < 0 || position.x > MyGame.width) {
+      if (position.x < 0 || position.x > MyGame.screenSize) {
         //position.x = 0;
         speed = Offset(-speed.dx, speed.dy);
       }
@@ -92,7 +92,9 @@ class MyGame extends BaseGame
     with DoubleTapDetector, TapDetector, VerticalDragDetector {
   bool running = true;
   var frameRate = 120;
+  static Vector2 screenSize;
   Disc currentDisc;
+  
 
   MyGame() {
     add(Disc()
@@ -114,10 +116,11 @@ class MyGame extends BaseGame
     return null;
   }
 
-  // @override
-  // void onResize(Vector2 canvasSize) {
-  //   super.onResize(canvasSize);
-  // }
+  @override
+  void onResize(Vector2 canvasSize) {
+    screenSize = canvasSize;
+    super.onResize(canvasSize);
+  }
 
   @override
   void onVerticalDragEnd(DragEndDetails details) {
