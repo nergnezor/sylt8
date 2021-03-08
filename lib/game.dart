@@ -68,8 +68,10 @@ position = Vector2(200,700);
   
   }
 
-  void changeSpeed(Offset o) {
+  void changeSpeed(Offset o,int div) {
     speed = o;
+    speed.dx /= div;
+    speed.dy /= div;
   }
 }
 
@@ -103,7 +105,7 @@ class MyGame extends BaseGame
   @override
   void onVerticalDragEnd(DragEndDetails details) {
     currentDisc?.flying = true;
-    currentDisc?.changeSpeed(details.velocity.pixelsPerSecond/frameRate);
+    currentDisc?.changeSpeed(details.velocity.pixelsPerSecond, frameRate);
  
       add(Disc());
     }
