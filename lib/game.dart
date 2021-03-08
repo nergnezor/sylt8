@@ -51,12 +51,13 @@ class Disc extends PositionComponent {
       position.x += speed.dx;
       if (position.y <0){
         position.y=0;
-        speed.dy *= -1;
+        speed=Offset(speed.dx, -speed.dy);
       }
       speed *= 0.97;
       life -= 0.001;
       if (life <= 0) {
         remove();
+        add(Disc());
       }
     }
     else if (life < 1) life +=0.01;
@@ -108,7 +109,6 @@ class MyGame extends BaseGame
     currentDisc?.flying = true;
     currentDisc?.changeSpeed(details.velocity.pixelsPerSecond, frameRate);
  
-      add(Disc());
     }
 
   @override
