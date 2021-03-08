@@ -116,6 +116,7 @@ class MyGame extends BaseGame
   void onVerticalDragEnd(DragEndDetails details) {
     currentDisc?.flying = true;
     currentDisc?.changeSpeed(details.velocity.pixelsPerSecond, frameRate);
+    currentDisc=null;
   }
 
   @override
