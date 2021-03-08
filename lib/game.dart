@@ -37,7 +37,7 @@ class Disc extends PositionComponent {
     super.render(c);
     palette.style = PaintingStyle.stroke;
     palette.strokeWidth = life*10;
-    size /= life*life
+    size /= life*life;
    // palette.color = palette.color.withOpacity(life);
     c.drawOval(size.toRect(), palette);
     // c.drawRect(const Rect.fromLTWH(0, 0, 3, 3), red);
