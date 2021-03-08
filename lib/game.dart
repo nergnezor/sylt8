@@ -58,7 +58,7 @@ class Disc extends PositionComponent {
         position.y = 0;
         speed = Offset(speed.dx, -speed.dy);
       }
-      if (position.x < 0 || position.x > width) {
+      if (position.x < 0 || position.x > MyGame.width) {
         //position.x = 0;
         speed = Offset(-speed.dx, speed.dy);
       }
