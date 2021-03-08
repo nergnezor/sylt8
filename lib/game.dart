@@ -22,7 +22,7 @@ class Palette {
 }
 
 class Disc extends PositionComponent {
-  var speed = 1.0;
+  Offset speed;
   var speedX = 1.0;
   bool flying = false;
   var life = 0.1;
@@ -46,7 +46,8 @@ class Disc extends PositionComponent {
   @override
   void update(double dt) {
     super.update(dt);
-    position.y += speed;
+    position.y += speed.dy;
+ position.x += speed.dx;
     if (flying) {
       speed *= 0.97;
       life -= 0.001;
@@ -62,13 +63,12 @@ class Disc extends PositionComponent {
      anchor = Anchor.center;
  super.onMount();
     size = Vector2.all(radius);
-position = Vector2(200,600);
+position = Vector2(200,800);
   
   }
 
-  void changeSpeed(double s) {
-    if (s.abs() > speed.abs()) speed = s / 100;
-    print(s);
+  void changeSpeed(Offset o) {
+    speed =o;
   }
 }
 
@@ -102,18 +102,10 @@ class MyGame extends BaseGame
   }
 
   @override
-  void onVerticalDragDown(DragDownDetails details) {}
-  @override
-  void onVerticalDragStart(DragStartDetails details) {
-    var disc = isTouched(details.localPosition);
-    
-  }
-
-  @override
   void onVerticalDragEnd(DragEndDetails details) {
     currentDisc?.flying = true;
     // currentDisc.speed = details.velocity.pixelsPerSecond.dy;
-    currentDisc?.changeSpeed(details.velocity.pixelsPerSecond.dy);
+    currentDisc?.changeSpeed(details.velocity.pixelsPerSecond);
  
       add(Disc());
     }
@@ -127,17 +119,6 @@ class MyGame extends BaseGame
         Vector2(details.localPosition.dx, details.localPosition.dy);
     // (disc as Disc)?.changeSpeed(details.delta.dy);
     // print(details.localPosition);
-  }
-
-  @override
-  void onTapUp(TapUpDetails details) {
-    print(details);
-  }
-
-  @override
-  void onTapDown(TapDownDetails details) {
-    print("Tap down");
-    final c = isTouched(details.localPosition);
   }
 
   @override
