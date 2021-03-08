@@ -69,15 +69,16 @@ position = Vector2(200,700);
   }
 
   void changeSpeed(Offset o) {
-    speed =o;
+    speed = o;
   }
 }
 
 class MyGame extends BaseGame
     with DoubleTapDetector, TapDetector, VerticalDragDetector {
   bool running = true;
+  var frameRate = 120;
   Disc currentDisc;
-  FPSCounter fpsCounter;
+  
   MyGame() {
     add(Disc()
       ..x = 200
@@ -90,23 +91,19 @@ class MyGame extends BaseGame
       height: 20,
     );
 
-    // final handled = components.firstWhere((c) {
+   
     for (var c in components) {
       if (c is PositionComponent && c.toRect().overlaps(touchArea)) {
         return c;
       }
-      // remove(c);
-      // return true;
     }
-    // });
     return null;
   }
 
   @override
   void onVerticalDragEnd(DragEndDetails details) {
     currentDisc?.flying = true;
-    // currentDisc.speed = details.velocity.pixelsPerSecond.dy;
-    currentDisc?.changeSpeed(details.velocity.pixelsPerSecond);
+    currentDisc?.changeSpeed(details.velocity.pixelsPerSecond/frameRate);
  
       add(Disc());
     }
@@ -118,8 +115,6 @@ class MyGame extends BaseGame
     currentDisc = (disc as Disc);
     currentDisc.position =
         Vector2(details.localPosition.dx, details.localPosition.dy);
-    // (disc as Disc)?.changeSpeed(details.delta.dy);
-    // print(details.localPosition);
   }
 
   @override
