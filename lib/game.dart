@@ -46,9 +46,10 @@ class Disc extends PositionComponent {
   @override
   void update(double dt) {
     super.update(dt);
-    position.y += speed.dy;
- position.x += speed.dx;
     if (flying) {
+      position.y += speed.dy;
+ position.x += speed.dx;
+
       speed *= 0.97;
       life -= 0.001;
       if (life <= 0) {
@@ -63,7 +64,7 @@ class Disc extends PositionComponent {
      anchor = Anchor.center;
  super.onMount();
     size = Vector2.all(radius);
-position = Vector2(200,800);
+position = Vector2(200,700);
   
   }
 
