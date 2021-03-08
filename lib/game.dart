@@ -53,6 +53,10 @@ class Disc extends PositionComponent {
         position.y=0;
         speed=Offset(speed.dx, -speed.dy);
       }
+      if (position.x <0){
+              position.x=0;
+              speed=Offset(-speed.dx, speed.dy);
+            }
       speed *= 0.97;
       life -= 0.001;
       if (life <= 0) {
