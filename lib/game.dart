@@ -36,10 +36,12 @@ class Disc extends PositionComponent {
   void render(Canvas c) {
     super.render(c);
     palette.style = PaintingStyle.stroke;
-    palette.strokeWidth = life*100;
+    palette.strokeWidth = life*10;
     //size = 100/life;
    // palette.color = palette.color.withOpacity(life);
-    c.drawOval(size.toRect(), palette);
+    var s=size;
+    s.x *=100/speed.dy;
+    c.drawOval(s.toRect(), palette);
     c.drawRect(const Rect.fromLTWH(0, 0, 3, 3), red);
     // c.drawRect(Rect.fromLTWH(width / 2, height / 2, 3, 3), blue);
   }
@@ -60,7 +62,7 @@ class Disc extends PositionComponent {
       }
       speed *= 0.97;
       life -= 0.01;
-      size=Vector2.all(100/life);
+     
       if (life <= 0) {
         flying = false;
         position = spawnPos;
