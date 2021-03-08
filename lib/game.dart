@@ -69,9 +69,7 @@ position = Vector2(200,700);
   }
 
   void changeSpeed(Offset o,int div) {
-    speed = o;
-    speed.dx /= div;
-    speed.dy /= div;
+    speed = Offset(o.dx/div,o.dy/div);
   }
 }
 
