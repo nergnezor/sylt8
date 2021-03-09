@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
@@ -94,7 +95,7 @@ class Disc extends PositionComponent {
 class MyGame extends BaseGame
     with DoubleTapDetector, TapDetector, VerticalDragDetector {
   bool running = true;
-  var frameRate = 120;
+  var frameRate = Platform.isAndroid ? 120 : 60;
   static Vector2 screenSize;
   Disc currentDisc;
 
