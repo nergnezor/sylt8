@@ -1,5 +1,7 @@
 import 'dart:io' show Platform;
 
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,7 +48,7 @@ void main() {
     ),
   );
   try {
-    if (Platform.isAndroid) {
+    if (!kIsWeb && Platform.isAndroid) {
       set120Hz();
       MyGame.frameRate = 120;
     }
