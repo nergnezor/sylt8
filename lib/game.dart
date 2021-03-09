@@ -53,14 +53,10 @@ class Disc extends PositionComponent {
     super.update(dt);
     if (flying) {
       if (position.y < 0 || position.y > MyGame.screenSize.y) {
-     
         speed = Offset(speed.dx, -speed.dy);
       }
       if (position.x < 0 || position.x > MyGame.screenSize.x) {
-    
-      position.x += speed.dx;
-      
-        speed = Offset(-speed.dx, speed.dy);
+       speed = Offset(-speed.dx, speed.dy);
       }
       position.x += speed.dx;
       position.y += speed.dy;
