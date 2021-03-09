@@ -64,9 +64,7 @@ class Disc extends PositionComponent {
         speed = Offset(-speed.dx, speed.dy);
       }
       position.x += speed.dx;
-      position.x += (spawnPos.x - position.x) / 10;
       position.y += speed.dy;
-      position.y += (spawnPos.y - position.y) / 100;
       speed *= 0.99;
       life -= 0.01;
 
@@ -77,6 +75,8 @@ class Disc extends PositionComponent {
         //   add(Disc());
       }
     } else if (life < 1) life += 0.01;
+    position.x += (spawnPos.x - position.x) / (life * 10);
+    position.y += (spawnPos.y - position.y) / (life * 10);
   }
 
   @override
