@@ -43,10 +43,8 @@ class Disc extends PositionComponent {
       var r = max(5, radius - life * 10);
       s.x = r;
       s.y = r;
-      palette.strokeWidth = max(2, 10 - 5 * life);
-    } else {
-      palette.strokeWidth = life * 10;
     }
+    palette.strokeWidth = max(2, 10 - 5 * life);
     //s.x=s.x.clamp(10,100);
     c.drawOval(s.toRect(), palette);
     c.drawRect(const Rect.fromLTWH(0, 0, 3, 3), red);
@@ -76,7 +74,7 @@ class Disc extends PositionComponent {
       }
     } else if (life < 1) life += 0.01;
     position.x += (spawnPos.x - position.x) / (life * 10);
-    position.y += (spawnPos.y - position.y) / (life * 10);
+    position.y += (spawnPos.y - position.y) / (life * 20);
   }
 
   @override
