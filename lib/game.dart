@@ -37,16 +37,15 @@ class Disc extends PositionComponent {
     super.render(c);
     palette.style = PaintingStyle.stroke;
     //size = 100/life;
-   // palette.color = palette.color.withOpacity(life);
-    var s=size;
-    if (life >1){
-      var r = max(5,radius-life*10);
+    // palette.color = palette.color.withOpacity(life);
+    var s = size;
+    if (life > 1) {
+      var r = max(5, radius - life * 10);
       s.x = r;
       s.y = r;
-    palette.strokeWidth = max(2,10-5*life);
-    }
-    else{
-    palette.strokeWidth = life*10;
+      palette.strokeWidth = max(2, 10 - 5 * life);
+    } else {
+      palette.strokeWidth = life * 10;
     }
     //s.x=s.x.clamp(10,100);
     c.drawOval(s.toRect(), palette);
@@ -62,13 +61,15 @@ class Disc extends PositionComponent {
         speed = Offset(speed.dx, -speed.dy);
       }
       if (position.x < 0 || position.x > MyGame.screenSize.x) {
-       speed = Offset(-speed.dx, speed.dy);
+        speed = Offset(-speed.dx, speed.dy);
       }
       position.x += speed.dx;
+      position.x += (spawnPos.x - position.x) / 100;
       position.y += speed.dy;
+      position.y += (spawnPos.y - position.y) / 100;
       speed *= 0.99;
       life -= 0.01;
-     
+
       if (life < 0) {
         flying = false;
         position = spawnPos;
@@ -88,7 +89,7 @@ class Disc extends PositionComponent {
 
   void changeSpeed(Offset o, int div) {
     speed = Offset(o.dx / div, o.dy / div);
-    life += speed.distance/10;
+    life += speed.distance / 10;
   }
 }
 
@@ -98,7 +99,6 @@ class MyGame extends BaseGame
   var frameRate = 120;
   static Vector2 screenSize;
   Disc currentDisc;
-  
 
   MyGame() {
     add(Disc()
@@ -123,6 +123,8 @@ class MyGame extends BaseGame
   @override
   void onResize(Vector2 canvasSize) {
     screenSize = canvasSize;
+    Disc.spawnPos.x = screenSize.x / 2;
+    Disc.spawnPos.y = 5 * screenSize.y / 6;
     super.onResize(canvasSize);
   }
 
@@ -130,7 +132,7 @@ class MyGame extends BaseGame
   void onVerticalDragEnd(DragEndDetails details) {
     currentDisc?.flying = true;
     currentDisc?.changeSpeed(details.velocity.pixelsPerSecond, frameRate);
-    currentDisc=null;
+    currentDisc = null;
   }
 
   @override
@@ -140,7 +142,7 @@ class MyGame extends BaseGame
     currentDisc = (disc as Disc);
     currentDisc.position =
         Vector2(details.localPosition.dx, details.localPosition.dy);
-        currentDisc.flying=false;
+    currentDisc.flying = false;
   }
 
   @override
