@@ -42,7 +42,7 @@ class Disc extends PositionComponent {
     if (life >1){
       s.x = radius -speed.dy.abs()-life*10;
       s.y = radius -speed.dx.abs()-life*10;
-    palette.strokeWidth = max(2,10-5*life);
+    palette.strokeWidth = math.max(2,10-5*life);
     }
     else{
     palette.strokeWidth = life*10;
