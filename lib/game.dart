@@ -63,7 +63,7 @@ class Disc extends PositionComponent {
       speed *= 0.99;
       life -= 0.01;
      
-      if (life <= 0) {
+      if (life < 0) {
         flying = false;
         position = spawnPos;
         //  remove();
@@ -82,7 +82,7 @@ class Disc extends PositionComponent {
 
   void changeSpeed(Offset o, int div) {
     speed = Offset(o.dx / div, o.dy / div);
-    life += speed.distance/100;
+    life += speed.distance/10;
   }
 }
 
