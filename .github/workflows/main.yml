@@ -38,11 +38,11 @@ jobs:
         java-version: '12.x'
     - run: flutter build apk
 
-    - name: Run Fastlane
-      uses: maierj/fastlane-action@master
-      with:
-        lane: closed_beta
-        subdirectory: android
+    # - name: Run Fastlane
+    #   uses: maierj/fastlane-action@master
+    #   with:
+    #     lane: closed_beta
+    #     subdirectory: android
 
     - uses: actions/upload-artifact@v2
       with:
