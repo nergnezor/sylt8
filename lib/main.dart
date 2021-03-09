@@ -39,16 +39,18 @@ void set120Hz() async {
 }
 
 void main() {
-  int freq = 60;
-  if (Platform.isAndroid) {
-    set120Hz();
-    freq = 120;
-  }
+  MyGame.frameRate = 60;
   runApp(
     GameWidget(
-      game: MyGame(freq),
+      game: MyGame(),
     ),
   );
+  try {
+    if (Platform.isAndroid) {
+      set120Hz();
+      MyGame.frameRate = 120;
+    }
+  } catch (e) {}
 }
 
 class MyApp extends StatelessWidget {

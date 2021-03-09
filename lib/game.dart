@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
@@ -95,14 +94,12 @@ class Disc extends PositionComponent {
 class MyGame extends BaseGame
     with DoubleTapDetector, TapDetector, VerticalDragDetector {
   bool running = true;
-  var frameRate;
+  static var frameRate;
   static Vector2 screenSize;
   Disc currentDisc;
 
-  // MyGame() {}
-  MyGame(int freq) {
-    frameRate = freq;
-  }
+  MyGame() {}
+
   Component isTouched(Offset pos) {
     final touchArea = Rect.fromCenter(
       center: pos,
@@ -121,7 +118,6 @@ class MyGame extends BaseGame
   @override
   Future<void> onLoad() async {
     add(Disc());
-    frameRate = Platform.isAndroid ? 120 : 60;
   }
 
   @override
