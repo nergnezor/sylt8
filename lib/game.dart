@@ -18,7 +18,7 @@ import 'package:flutter/material.dart';
 class Palette {
   static const PaletteEntry white = BasicPalette.white;
   static const PaletteEntry red = PaletteEntry(Color(0xFFFF0000));
-  static const PaletteEntry blue = PaletteEntry(Color(0xFF0000FF));
+  static const PaletteEntry blue = PaletteEntry(Color(0xFF3000FF));
 }
 
 class Disc extends PositionComponent {
@@ -28,9 +28,9 @@ class Disc extends PositionComponent {
   var life = 0.1;
   static const radius = 100.0;
   static Vector2 spawnPos = Vector2(200, 700);
-  static Paint palette = Palette.white.paint;
   static Paint red = Palette.red.paint;
   static Paint blue = Palette.blue.paint;
+  static Paint palette = blue;
 
   @override
   void render(Canvas c) {
