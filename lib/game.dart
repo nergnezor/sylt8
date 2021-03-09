@@ -41,6 +41,8 @@ class Disc extends PositionComponent {
     var s=size;
     if (life >1){
       s.x = radius -speed.dy.abs();
+      s.y = radius -speed.dx.abs();
+    palette.strokeWidth = 10-life;
     }
     else{
     palette.strokeWidth = life*10;
