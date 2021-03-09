@@ -1,35 +1,41 @@
+import 'dart:io' show Platform;
+
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:rive/rive.dart';
+// import 'dart:io' show Platform;
 
 import 'game.dart';
 import 'wiper_controller.dart';
 
 // void main() => runApp(MyApp());
 void set120Hz() async {
+  var modes;
   try {
-    var modes = await FlutterDisplayMode.supported;
-    modes.forEach(print);
+    modes = await FlutterDisplayMode.supported;
+  } on MissingPluginException catch (e) {}
+  modes.forEach(print);
 
-    /// On OnePlus 7 Pro:
-    /// #1 1080x2340 @ 60Hz
-    /// #2 1080x2340 @ 90Hz
-    /// #3 1440x3120 @ 90Hz
-    /// #4 1440x3120 @ 60Hz
+  /// On OnePlus 7 Pro:
+  /// #1 1080x2340 @ 60Hz
+  /// #2 1080x2340 @ 90Hz
+  /// #3 1440x3120 @ 90Hz
+  /// #4 1440x3120 @ 60Hz
 
-    /// On OnePlus 8 Pro:
-    /// #1 1080x2376 @ 60Hz
-    /// #2 1440x3168 @ 120Hz
-    /// #3 1440x3168 @ 60Hz
-    /// #4 1080x2376 @ 120Hz
+  /// On OnePlus 8 Pro:
+  /// #1 1080x2376 @ 60Hz
+  /// #2 1440x3168 @ 120Hz
+  /// #3 1440x3168 @ 60Hz
+  /// #4 1080x2376 @ 120Hz
+  try {
     await FlutterDisplayMode.setMode(modes.last);
-  } on PlatformException catch (e) {
+
     /// e.code =>
     /// noAPI - No API support. Only Marshmallow and above.
-    /// noActivity - Activity is not available. Probably app is in background
-  }
+    /// noActivity -  Activity is not available. Probably app is in background
+  } on PlatformException catch (e) {}
 }
 
 void main() {
@@ -38,7 +44,9 @@ void main() {
       game: MyGame(),
     ),
   );
-  set120Hz();
+  if (Platform.isAndroid) {
+    set120Hz();
+  }
 }
 
 class MyApp extends StatelessWidget {

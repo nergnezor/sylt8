@@ -98,11 +98,7 @@ class MyGame extends BaseGame
   static Vector2 screenSize;
   Disc currentDisc;
 
-  MyGame() {
-    add(Disc()
-      ..x = 200
-      ..y = 100);
-  }
+  MyGame() {}
   Component isTouched(Offset pos) {
     final touchArea = Rect.fromCenter(
       center: pos,
@@ -116,6 +112,11 @@ class MyGame extends BaseGame
       }
     }
     return null;
+  }
+
+  @override
+  Future<void> onLoad() async {
+    add(Disc());
   }
 
   @override
