@@ -40,8 +40,8 @@ class Disc extends PositionComponent {
    // palette.color = palette.color.withOpacity(life);
     var s=size;
     if (life >1){
-      s.x = radius -speed.dy.abs()-life*10;
-      s.y = radius -speed.dx.abs()-life*10;
+      s.x = max(5,radius -speed.dx.abs()-life*10);
+      s.y = max(5,radius -speed.dy.abs()-life*10);
     palette.strokeWidth = max(2,10-5*life);
     }
     else{
