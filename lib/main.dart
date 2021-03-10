@@ -42,11 +42,8 @@ void set120Hz() async {
 
 void main() {
   MyGame.frameRate = 60;
-  runApp(
-    GameWidget(
-      game: MyGame(),
-    ),
-  );
+  final MyApp app = MyApp();
+  runApp(app);
   try {
     if (!kIsWeb && Platform.isAndroid) {
       set120Hz();
@@ -132,42 +129,25 @@ class _MyRiveAnimationState extends State<MyRiveAnimation> {
   // final ValueChanged<bool> onChanged;
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
+        // Column(
+        // children: [
         Expanded(
-          child: GestureDetector(
-            onVerticalDragUpdate: (details) {
-              print("tap");
-              Shape shape = _artboard.children.firstWhere(
-                  (element) => element.coreType == Shape().coreType);
-              shape.scaleY += (details.delta.dy / 100);
-            },
-            onTap: () {
-              doit();
-            },
-            child: _artboard != null
-                ? Rive(
-                    artboard: _artboard,
-                    fit: BoxFit.cover,
-                  )
-                : Container(),
-          ),
+          child: _artboard != null
+              ? Rive(
+                  artboard: _artboard,
+                  fit: BoxFit.cover,
+                )
+              : Container(),
         ),
-        SizedBox(
-          height: 50,
-          width: 200,
-          child: SwitchListTile(
-            title: const Text('Wipers'),
-            value: _wipers,
-            onChanged: _wipersChange,
-          ),
-        ),
+
+        // ),
+        GameWidget(
+          game: MyGame(),
+        )
       ],
     );
-  }
-
-  doit() {
-    print("hej");
-    // _artboard.path.transform(Transform.scale(scale: 0.9).);
+    // ];
   }
 }

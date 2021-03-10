@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:math';
 import 'dart:ui';
 
@@ -5,6 +6,7 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
 import 'package:flame/palette.dart';
+import 'disc.dart';
 import 'package:flutter/material.dart';
 
 // void main() {
@@ -15,96 +17,17 @@ import 'package:flutter/material.dart';
 //   );
 // }
 
-class Palette {
-  static const PaletteEntry white = BasicPalette.white;
-  static const PaletteEntry red = PaletteEntry(Color(0xFFFF0000));
-  static const PaletteEntry blue = PaletteEntry(Color(0xFF3000FF));
-}
-
-class Disc extends PositionComponent {
-  Offset speed;
-  var speedX = 1.0;
-  bool flying = false;
-  var life = 0.1;
-  static const radius = 100.0;
-  static Vector2 spawnPos = Vector2(200, 700);
-  static Paint red = Palette.red.paint;
-  static Paint blue = Palette.blue.paint;
-  static Paint palette = blue;
-
-  @override
-  void render(Canvas c) {
-    super.render(c);
-    palette.style = PaintingStyle.stroke;
-    //size = 100/life;
-    // palette.color = palette.color.withOpacity(life);
-    var s = size;
-    if (life > 1) {
-      var r = max(5, radius - life * 10);
-      s.x = r;
-      s.y = r;
-    }
-    palette.strokeWidth = max(2, 10 - 5 * life);
-    //s.x=s.x.clamp(10,100);
-    c.drawOval(s.toRect(), palette);
-    c.drawRect(const Rect.fromLTWH(0, 0, 3, 3), red);
-    // c.drawRect(Rect.fromLTWH(width / 2, height / 2, 3, 3), blue);
-  }
-
-  @override
-  void update(double dt) {
-    super.update(dt);
-    if (flying) {
-      if (position.y < 0 || position.y > MyGame.screenSize.y) {
-        speed = Offset(speed.dx, -speed.dy);
-        position.y += speed.dy;
-      }
-      if (position.x < 0 || position.x > MyGame.screenSize.x) {
-        speed = Offset(-speed.dx, speed.dy);
-        position.x += speed.dx;
-      }
-      position.x += speed.dx;
-      position.y += speed.dy;
-      speed *= 0.99;
-      life -= 0.01;
-
-      if (life < 0) {
-        flying = false;
-        // position = spawnPos;
-        //  remove();
-        //   add(Disc());
-      }
-    } else if (life < 1) {
-      life += 0.01;
-    }
-    if (life < 2) {
-      position.x += (spawnPos.x - position.x) / (life * 10);
-      position.y += (spawnPos.y - position.y) / (life * 10);
-    }
-  }
-
-  @override
-  void onMount() {
-    anchor = Anchor.center;
-    super.onMount();
-    size = Vector2.all(radius);
-    position = spawnPos;
-  }
-
-  void changeSpeed(Offset o, int div) {
-    speed = Offset(o.dx / div, o.dy / div);
-    life += speed.distance / 10;
-  }
-}
-
 class MyGame extends BaseGame
-    with DoubleTapDetector, TapDetector, VerticalDragDetector {
+    with MultiTouchTapDetector, MultiTouchDragDetector {
   bool running = true;
   static var frameRate;
   static Vector2 screenSize;
   Disc currentDisc;
-
-  MyGame() {}
+  static final Paint paint = Palette.white.paint;
+  MyGame() {
+    paint.style = PaintingStyle.stroke;
+    paint.strokeWidth = 10;
+  }
 
   Component isTouched(Offset pos) {
     final touchArea = Rect.fromCenter(
@@ -122,6 +45,12 @@ class MyGame extends BaseGame
   }
 
   @override
+  void render(Canvas c) {
+    c.drawRect(Rect.fromLTWH(0, 0, size.x, size.y), paint);
+    super.render(c);
+  }
+
+  @override
   Future<void> onLoad() async {
     add(Disc());
   }
@@ -135,30 +64,33 @@ class MyGame extends BaseGame
   }
 
   @override
-  void onVerticalDragEnd(DragEndDetails details) {
-    currentDisc?.flying = true;
-    currentDisc?.changeSpeed(details.velocity.pixelsPerSecond, frameRate);
+  void onDragEnd(int, DragEndDetails details) {
+    if (currentDisc == null) return;
+    currentDisc.flying = true;
+    currentDisc.changeSpeed(details.velocity.pixelsPerSecond, frameRate);
+    currentDisc.held = false;
     currentDisc = null;
   }
 
   @override
-  void onVerticalDragUpdate(DragUpdateDetails details) {
+  void onDragUpdate(int, DragUpdateDetails details) {
     var disc = isTouched(details.localPosition);
     if (disc == null) return;
     currentDisc = (disc as Disc);
+    currentDisc.held = true;
     currentDisc.position =
         Vector2(details.localPosition.dx, details.localPosition.dy);
     currentDisc.flying = false;
   }
 
-  @override
-  void onDoubleTap() {
-    if (running) {
-      pauseEngine();
-    } else {
-      resumeEngine();
-    }
+  // @override
+  // void onTap(int) {
+  //   if (running) {
+  //     pauseEngine();
+  //   } else {
+  //     resumeEngine();
+  //   }
 
-    running = !running;
-  }
+  //   running = !running;
+  // }
 }
