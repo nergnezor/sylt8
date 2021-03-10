@@ -57,9 +57,11 @@ class Disc extends PositionComponent {
     if (flying) {
       if (position.y < 0 || position.y > MyGame.screenSize.y) {
         speed = Offset(speed.dx, -speed.dy);
+        position.y += speed.dy;
       }
       if (position.x < 0 || position.x > MyGame.screenSize.x) {
         speed = Offset(-speed.dx, speed.dy);
+        position.x += speed.dx;
       }
       position.x += speed.dx;
       position.y += speed.dy;
@@ -74,6 +76,8 @@ class Disc extends PositionComponent {
       }
     } else if (life < 1) {
       life += 0.01;
+    }
+    if (life < 2) {
       position.x += (spawnPos.x - position.x) / (life * 10);
       position.y += (spawnPos.y - position.y) / (life * 10);
     }
