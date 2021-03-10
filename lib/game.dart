@@ -72,9 +72,11 @@ class Disc extends PositionComponent {
         //  remove();
         //   add(Disc());
       }
-    } else if (life < 1) life += 0.01;
-    position.x += (spawnPos.x - position.x) / (life * 10);
-    position.y += (spawnPos.y - position.y) / (life * 20);
+    } else if (life < 1) {
+      life += 0.01;
+      position.x += (spawnPos.x - position.x) / (life * 10);
+      position.y += (spawnPos.y - position.y) / (life * 10);
+    }
   }
 
   @override
