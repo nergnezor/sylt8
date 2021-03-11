@@ -131,6 +131,14 @@ class _MyRiveAnimationState extends State<MyRiveAnimation> {
     return Stack(
       children: [
         Column(children: [
+          // GestureDetector(onVerticalDragUpdate: (details) {
+          //   print("tap");
+          //   Shape shape = _artboard.children
+          //       .firstWhere((element) => element.coreType == Shape().coreType);
+          //   shape.scaleY += (details.delta.dy / 100);
+          // }, onTap: () {
+          //   // doit();
+          // }),
           Expanded(
             child: _artboard != null
                 ? Rive(
@@ -143,7 +151,8 @@ class _MyRiveAnimationState extends State<MyRiveAnimation> {
         Opacity(
             opacity: 0.3,
             child: GameWidget(
-              game: MyGame(),
+              game: MyGame(_artboard?.children?.firstWhere(
+                  (element) => element.coreType == Shape().coreType)),
             ))
       ],
     );
