@@ -85,7 +85,7 @@ class Disc extends PositionComponent {
     anchor = Anchor.center;
   }
 
-  void changeSpeed(Offset o, int div) {
+  void changeSpeed(Offset o, double div) {
     speed = Offset(o.dx / div, o.dy / div);
     life += speed.distance / 10;
   }

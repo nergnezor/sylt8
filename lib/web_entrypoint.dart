@@ -1,7 +1,6 @@
 // @dart=2.7
 // Flutter web bootstrap script for package:flingjammer/main.dart.
 
-import 'dart:ui' as ui;
 import 'dart:async';
 
 import 'package:flingjammer/main.dart' as entrypoint;

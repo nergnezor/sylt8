@@ -1,11 +1,8 @@
-import 'dart:ffi';
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
-import 'package:flame/palette.dart';
 import 'disc.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +17,7 @@ import 'package:flutter/material.dart';
 class MyGame extends BaseGame
     with MultiTouchTapDetector, MultiTouchDragDetector {
   bool running = true;
-  static var frameRate;
+  static double frameRate;
   static Vector2 screenSize;
   Disc currentDisc;
   static final Paint paint = Palette.white.paint;
