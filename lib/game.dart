@@ -30,7 +30,7 @@ class MyGame extends BaseGame
     paint.strokeWidth = 10;
   }
 
-  Component isTouched(Offset pos) {
+  PositionComponent isTouched(Offset pos) {
     final touchArea = Rect.fromCenter(
       center: pos,
       width: 20,
@@ -39,7 +39,7 @@ class MyGame extends BaseGame
 
     for (var c in components) {
       if (c is PositionComponent && c.toRect().overlaps(touchArea)) {
-        return c as Component;
+        return c;
       }
     }
     return null;
@@ -53,7 +53,7 @@ class MyGame extends BaseGame
 
   @override
   Future<void> onLoad() async {
-    add(Disc());
+    add(Disc(shape));
   }
 
   @override
@@ -75,7 +75,8 @@ class MyGame extends BaseGame
 
   @override
   void onDragUpdate(int, DragUpdateDetails details) {
-    shape.y += details.delta.dy;
+    // shape.x = details.localPosition.dx;
+    // shape.y = details.localPosition.dy;
     var disc = isTouched(details.localPosition);
     if (disc == null) return;
     currentDisc = (disc as Disc);

@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame/palette.dart';
+import 'package:rive/src/rive_core/shapes/shape.dart';
 
 class Palette {
   static const PaletteEntry white = BasicPalette.white;
@@ -21,6 +22,10 @@ class Disc extends PositionComponent {
   static Paint red = Palette.red.paint;
   static Paint blue = Palette.blue.paint;
   static Paint palette = red;
+  Shape shape;
+  Disc(Shape s) {
+    shape = s;
+  }
 
   @override
   void render(Canvas c) {
@@ -39,6 +44,9 @@ class Disc extends PositionComponent {
     c.drawRect(s.toRect(), palette);
     if (!flying && held)
       c.drawRect(s.toRect(), Palette.white.withAlpha(100).paint);
+
+    shape.x = position.x;
+    shape.y = position.y - 300;
   }
 
   @override

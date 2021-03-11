@@ -5,6 +5,7 @@ import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flingjammer/main.dart' as entrypoint;
+import 'package:flutter/foundation.dart';
 
 typedef _UnaryFunction = dynamic Function(List<String> args);
 typedef _NullaryFunction = dynamic Function();
