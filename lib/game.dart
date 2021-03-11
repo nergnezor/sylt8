@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 class MyGame extends BaseGame
     with MultiTouchTapDetector, MultiTouchDragDetector {
   bool running = true;
-  static double frameRate;
+  static double frameRate = 60;
   static Vector2 screenSize;
   Disc currentDisc;
   static final Paint paint = Palette.white.paint;

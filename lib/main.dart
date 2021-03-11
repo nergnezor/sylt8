@@ -13,7 +13,7 @@ import 'game.dart';
 import 'wiper_controller.dart';
 
 // void main() => runApp(MyApp());
-Future<double> set120Hz() async {
+void set120Hz() async {
   var modes;
   try {
     modes = await FlutterDisplayMode.supported;
@@ -38,16 +38,15 @@ Future<double> set120Hz() async {
     /// noAPI - No API support. Only Marshmallow and above.
     /// noActivity -  Activity is not available. Probably app is in background
   } on PlatformException catch (e) {}
-  return modes.last.refreshRate;
+  MyGame.frameRate = modes.last.refreshRate;
 }
 
 void main() {
-  MyGame.frameRate = 60;
   final MyApp app = MyApp();
   runApp(app);
   try {
     if (!kIsWeb && Platform.isAndroid) {
-      MyGame.frameRate = set120Hz() as double;
+      set120Hz();
     }
   } catch (e) {}
 }
@@ -131,18 +130,16 @@ class _MyRiveAnimationState extends State<MyRiveAnimation> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // Column(
-        // children: [
-        Expanded(
-          child: _artboard != null
-              ? Rive(
-                  artboard: _artboard,
-                  fit: BoxFit.cover,
-                )
-              : Container(),
-        ),
-
-        // ),
+        Column(children: [
+          Expanded(
+            child: _artboard != null
+                ? Rive(
+                    artboard: _artboard,
+                    fit: BoxFit.cover,
+                  )
+                : Container(),
+          ),
+        ]),
         Opacity(
             opacity: 0.3,
             child: GameWidget(
@@ -150,6 +147,5 @@ class _MyRiveAnimationState extends State<MyRiveAnimation> {
             ))
       ],
     );
-    // ];
   }
 }

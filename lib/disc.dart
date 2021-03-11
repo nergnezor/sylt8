@@ -12,7 +12,7 @@ class Palette {
 
 class Disc extends PositionComponent {
   Offset speed;
-  bool held;
+  bool held = false;
   var speedX = 1.0;
   bool flying = false;
   var life = 0.1;
