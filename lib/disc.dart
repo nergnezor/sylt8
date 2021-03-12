@@ -35,16 +35,18 @@ class Disc extends PositionComponent {
     // palette.color = palette.color.withOpacity(life);
     var s = size;
     // if (life > 1) {
-    var r = max(5, radius - life * 10);
+    var r = max(20, radius - life * 10);
     s.x = r;
     s.y = r;
     // }
-    palette.strokeWidth = max(2, 10 - 5 * life);
+    palette.strokeWidth = max(4, 10 - 5 * life);
     //s.x=s.x.clamp(10,100);
-    c.drawRect(s.toRect(), palette);
+    c.drawOval(s.toRect(), palette);
     if (!flying && held)
-      c.drawRect(s.toRect(), Palette.white.withAlpha(100).paint);
-
+      c.drawOval(s.toRect(), Palette.white.withAlpha(100).paint);
+    r /= 100;
+    shape.scaleX = r;
+    shape.scaleY = r;
     shape.x = position.x;
     shape.y = position.y - 300;
   }
