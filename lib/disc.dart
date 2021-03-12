@@ -35,7 +35,7 @@ class Disc extends PositionComponent {
     // palette.color = palette.color.withOpacity(life);
     var s = size;
     // if (life > 1) {
-    var r = max(20, radius - life * 10);
+    double r = max(20, radius - life * 10);
     s.x = r;
     s.y = r;
     // }
@@ -83,7 +83,7 @@ class Disc extends PositionComponent {
     }
     if (flying) {
       var spawnDist = spawnPos - position;
-      position += spawnDist / (life * 10);
+      // position += spawnDist / (life * 10);
     }
   }
 
