@@ -23,9 +23,20 @@ class MyGame extends BaseGame
   static Vector2 screenSize;
   Disc currentDisc;
   Shape shape;
+  static Artboard artboard;
   static final Paint paint = Palette.white.paint;
-  MyGame(Shape s) {
-    shape = s;
+  final pauseOverlayIdentifier = "PauseMenu";
+
+  MyGame(Artboard a) {
+    shape = a?.children
+        ?.firstWhere((element) => element.coreType == Shape().coreType);
+    overlays.add(pauseOverlayIdentifier); // marks "PauseMenu" to be rendered.
+    // artboard = a;
+    // a?.y = 100;
+    // if (a?.runtimeType == Rive) {
+    // (a as Rive).artboard.x = 100;
+    artboard = a;
+    // }
     paint.style = PaintingStyle.stroke;
     paint.strokeWidth = 10;
   }
@@ -48,7 +59,10 @@ class MyGame extends BaseGame
   @override
   void render(Canvas c) {
     c.drawRect(Rect.fromLTWH(0, 0, size.x, size.y), paint);
+    // artboard.= {};
+    // artboard.xChanged(100, 200);
     super.render(c);
+    artboard?.draw(c);
   }
 
   @override
@@ -75,8 +89,8 @@ class MyGame extends BaseGame
 
   @override
   void onDragUpdate(int, DragUpdateDetails details) {
-    // shape.x = details.localPosition.dx;
-    // shape.y = details.localPosition.dy;
+    shape?.x += details.delta.dx;
+    shape?.y += details.delta.dy;
     var disc = isTouched(details.localPosition);
     if (disc == null) return;
     currentDisc = (disc as Disc);

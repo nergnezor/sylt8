@@ -7,37 +7,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:rive/rive.dart';
-// import 'dart:io' show Platform;
 
 import 'game.dart';
-import 'wiper_controller.dart';
 
-// void main() => runApp(MyApp());
 void set120Hz() async {
-  var modes;
-  try {
-    modes = await FlutterDisplayMode.supported;
-  } on MissingPluginException catch (e) {}
+  var modes = await FlutterDisplayMode.supported;
   modes.forEach(print);
-
-  /// On OnePlus 7 Pro:
-  /// #1 1080x2340 @ 60Hz
-  /// #2 1080x2340 @ 90Hz
-  /// #3 1440x3120 @ 90Hz
-  /// #4 1440x3120 @ 60Hz
-
-  /// On OnePlus 8 Pro:
-  /// #1 1080x2376 @ 60Hz
-  /// #2 1440x3168 @ 120Hz
-  /// #3 1440x3168 @ 60Hz
-  /// #4 1080x2376 @ 120Hz
   try {
     await FlutterDisplayMode.setMode(modes.last);
 
     /// e.code =>
     /// noAPI - No API support. Only Marshmallow and above.
     /// noActivity -  Activity is not available. Probably app is in background
-  } on PlatformException catch (e) {}
+  } on PlatformException {
+    return;
+  }
   MyGame.frameRate = modes.last.refreshRate;
 }
 
@@ -50,6 +34,19 @@ void main() {
     }
   } catch (e) {}
 }
+// void main() {
+//   final MyApp app = MyApp();
+//   runApp(
+//     GameWidget(
+//       game: MyGame(null),
+//       overlayBuilderMap: {
+//         "PauseMenu": (ctx, a) {
+//           return app.build(ctx);
+//         },
+//       },
+//     ),
+//   );
+// }
 
 class MyApp extends StatelessWidget {
   @override
@@ -66,23 +63,6 @@ class MyApp extends StatelessWidget {
 class MyRiveAnimation extends StatefulWidget {
   @override
   _MyRiveAnimationState createState() => _MyRiveAnimationState();
-}
-
-class TapboxA extends StatefulWidget {
-  TapboxA({Key key}) : super(key: key);
-
-  @override
-  _TapboxAState createState() => _TapboxAState();
-}
-
-class _TapboxAState extends State<TapboxA> {
-  bool _active = false;
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
 }
 
 class _MyRiveAnimationState extends State<MyRiveAnimation> {
@@ -110,49 +90,20 @@ class _MyRiveAnimationState extends State<MyRiveAnimation> {
     }
   }
 
-  void _wipersChange(bool wipersOn) {
-    if (_wipersController == null) {
-      _artboard.addController(
-        _wipersController = WiperAnimation('windshield_wipers'),
-      );
-    }
-    if (wipersOn) {
-      _wipersController.start();
-    } else {
-      _wipersController.stop();
-    }
-    setState(() => _wipers = wipersOn);
-  }
-
-  // final bool active;
-  // final ValueChanged<bool> onChanged;
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Column(children: [
-          // GestureDetector(onVerticalDragUpdate: (details) {
-          //   print("tap");
-          //   Shape shape = _artboard.children
-          //       .firstWhere((element) => element.coreType == Shape().coreType);
-          //   shape.scaleY += (details.delta.dy / 100);
-          // }, onTap: () {
-          //   // doit();
-          // }),
-          Expanded(
-            child: _artboard != null
-                ? Rive(
-                    artboard: _artboard,
-                    fit: BoxFit.cover,
-                  )
-                : Container(),
-          ),
-        ]),
+        _artboard != null
+            ? Rive(
+                artboard: _artboard,
+                fit: BoxFit.scaleDown,
+              )
+            : Container(),
         Opacity(
             opacity: 0.3,
             child: GameWidget(
-              game: MyGame(_artboard?.children?.firstWhere(
-                  (element) => element.coreType == Shape().coreType)),
+              game: MyGame(_artboard),
             ))
       ],
     );

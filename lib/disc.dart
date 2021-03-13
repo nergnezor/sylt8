@@ -2,8 +2,11 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flame/components.dart';
+import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
+import 'package:flingjammer/game.dart';
 import 'package:rive/src/rive_core/shapes/shape.dart';
+import 'package:sensors/sensors.dart';
 
 class Palette {
   static const PaletteEntry white = BasicPalette.white;
@@ -12,7 +15,7 @@ class Palette {
 }
 
 class Disc extends PositionComponent {
-  Offset speed;
+  Offset speed = Offset.zero;
   bool held = false;
   var speedX = 1.0;
   bool flying = false;
@@ -23,10 +26,16 @@ class Disc extends PositionComponent {
   static Paint blue = Palette.blue.paint;
   static Paint palette = red;
   Shape shape;
+  AccelerometerEvent acc;
   Disc(Shape s) {
     shape = s;
+    accelerometerEvents.listen((AccelerometerEvent event) {
+      // print(event);
+      acc = event;
+      // shape.x -= event.x;
+      // shape.y += event.y;
+    });
   }
-
   @override
   void render(Canvas c) {
     super.render(c);
@@ -45,10 +54,12 @@ class Disc extends PositionComponent {
     if (!flying && held)
       c.drawOval(s.toRect(), Palette.white.withAlpha(100).paint);
     r /= 100;
-    shape.scaleX = r;
-    shape.scaleY = r;
-    shape.x = position.x;
-    shape.y = position.y - 300;
+    // shape?.scaleX = r;
+    // shape?.scaleY = r;
+    // shape?.x = position.x;
+    // MyGame.artboard.x = 0;
+    // shape?.y = position.y;
+    //   -300;
   }
 
   @override
@@ -56,7 +67,11 @@ class Disc extends PositionComponent {
     super.update(dt);
     angle += dt;
     // position.rotate(dt, center: Vector2(300, 700));
+    // speed.dx -= acc?.x;
+    // position.y += acc?.y;
     if (flying) {
+      if (acc != null)
+        speed = Offset(speed.dx - acc?.x / 120, speed.dy + acc?.y / 120);
       if (position.y < 0 ||
           position.y > window.physicalSize.height / window.devicePixelRatio) {
         speed = Offset(speed.dx, -speed.dy);
@@ -67,9 +82,11 @@ class Disc extends PositionComponent {
         speed = Offset(-speed.dx, speed.dy);
         position.x += speed.dx;
       }
+      // if (speed != null) {
       position.x += speed.dx;
       position.y += speed.dy;
-      speed *= 0.99;
+      // }
+      speed *= 0.8;
       life -= 0.01;
 
       if (life < 0) {
