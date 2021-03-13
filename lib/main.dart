@@ -26,8 +26,8 @@ void set120Hz() async {
 }
 
 void main() {
-  final MyApp app = MyApp();
-  runApp(app);
+  // final MyApp app = MyApp();
+  runApp(MyApp());
   try {
     if (!kIsWeb && Platform.isAndroid) {
       set120Hz();
@@ -68,7 +68,7 @@ class MyRiveAnimation extends StatefulWidget {
 class _MyRiveAnimationState extends State<MyRiveAnimation> {
   final riveFileName = 'assets/pong.riv';
   Artboard _artboard;
-  WiperAnimation _wipersController;
+  // WiperAnimation _wipersController;
   // Flag to turn wipers on and off
   bool _wipers = false;
 
@@ -97,11 +97,11 @@ class _MyRiveAnimationState extends State<MyRiveAnimation> {
         _artboard != null
             ? Rive(
                 artboard: _artboard,
-                fit: BoxFit.scaleDown,
+                fit: BoxFit.none,
               )
             : Container(),
         Opacity(
-            opacity: 0.3,
+            opacity: 0.1,
             child: GameWidget(
               game: MyGame(_artboard),
             ))

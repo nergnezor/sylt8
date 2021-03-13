@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
@@ -5,6 +6,8 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 import 'package:flingjammer/game.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:rive/src/rive_core/shapes/shape.dart';
 import 'package:sensors/sensors.dart';
 
@@ -20,7 +23,7 @@ class Disc extends PositionComponent {
   var speedX = 1.0;
   bool flying = false;
   var life = 0.1;
-  static const radius = 100.0;
+  static const radius = 200.0;
   static Vector2 spawnPos = Vector2(200, 700);
   static Paint red = Palette.red.paint;
   static Paint blue = Palette.blue.paint;
@@ -29,15 +32,17 @@ class Disc extends PositionComponent {
   AccelerometerEvent acc;
   Disc(Shape s) {
     shape = s;
-    accelerometerEvents.listen((AccelerometerEvent event) {
-      // print(event);
-      acc = event;
-      // shape.x -= event.x;
-      // shape.y += event.y;
-    });
+    if (!kIsWeb && Platform.isAndroid || Platform.isIOS)
+      accelerometerEvents.listen((AccelerometerEvent event) {
+        // print(event);
+        acc = event;
+        // shape.x -= event.x;
+        // shape.y += event.y;
+      });
   }
   @override
   void render(Canvas c) {
+    return;
     super.render(c);
     palette.style = PaintingStyle.stroke;
     //size = 100/life;
@@ -56,29 +61,32 @@ class Disc extends PositionComponent {
     r /= 100;
     // shape?.scaleX = r;
     // shape?.scaleY = r;
-    // shape?.x = position.x;
-    // MyGame.artboard.x = 0;
-    // shape?.y = position.y;
     //   -300;
   }
 
   @override
   void update(double dt) {
     super.update(dt);
+    shape?.x = position.x - spawnPos.x;
+    // MyGame.artboard.x = 0;
+    shape?.y = position.y - spawnPos.y / 1.7;
     angle += dt;
+    if (shape?.scaleY < 1) shape.scaleY += 0.01 / pow(shape.scaleY, 2);
+    // if (shape?.scaleY > 1) shape?.scaleY -= 0.1;
     // position.rotate(dt, center: Vector2(300, 700));
     // speed.dx -= acc?.x;
     // position.y += acc?.y;
     if (flying) {
       if (acc != null)
         speed = Offset(speed.dx - acc?.x / 120, speed.dy + acc?.y / 120);
-      if (position.y < 0 ||
-          position.y > window.physicalSize.height / window.devicePixelRatio) {
+      final height = window.physicalSize.height / window.devicePixelRatio;
+      if (position.y < 0 || position.y > height) {
         speed = Offset(speed.dx, -speed.dy);
         position.y += speed.dy;
+        shape?.scaleY =
+            max(0.1, shape.scaleY - speed.dy.abs() / MyGame.frameRate);
       }
-      if (position.x < 0 ||
-          position.x > window.physicalSize.width / window.devicePixelRatio) {
+      if (position.x < 0 || position.x > height) {
         speed = Offset(-speed.dx, speed.dy);
         position.x += speed.dx;
       }
@@ -86,7 +94,7 @@ class Disc extends PositionComponent {
       position.x += speed.dx;
       position.y += speed.dy;
       // }
-      speed *= 0.8;
+      speed *= 0.99;
       life -= 0.01;
 
       if (life < 0) {

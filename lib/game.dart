@@ -28,8 +28,7 @@ class MyGame extends BaseGame
   final pauseOverlayIdentifier = "PauseMenu";
 
   MyGame(Artboard a) {
-    shape = a?.children
-        ?.firstWhere((element) => element.coreType == Shape().coreType);
+    shape = a?.children?.firstWhere((element) => element.name == 'Ball');
     overlays.add(pauseOverlayIdentifier); // marks "PauseMenu" to be rendered.
     // artboard = a;
     // a?.y = 100;
@@ -58,16 +57,16 @@ class MyGame extends BaseGame
 
   @override
   void render(Canvas c) {
-    c.drawRect(Rect.fromLTWH(0, 0, size.x, size.y), paint);
+    // c.drawRect(Rect.fromLTWH(0, 0, size.x, size.y), paint);
     // artboard.= {};
     // artboard.xChanged(100, 200);
+    // artboard?.draw(c);
     super.render(c);
-    artboard?.draw(c);
   }
 
   @override
   Future<void> onLoad() async {
-    add(Disc(shape));
+    if (shape != null) add(Disc(shape));
   }
 
   @override
@@ -89,8 +88,8 @@ class MyGame extends BaseGame
 
   @override
   void onDragUpdate(int, DragUpdateDetails details) {
-    shape?.x += details.delta.dx;
-    shape?.y += details.delta.dy;
+    // shape?.x += details.delta.dx;
+    // shape?.y += details.delta.dy;
     var disc = isTouched(details.localPosition);
     if (disc == null) return;
     currentDisc = (disc as Disc);
