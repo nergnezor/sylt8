@@ -7,8 +7,9 @@ import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 import 'package:flingjammer/game.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:rive/src/rive_core/shapes/shape.dart';
+import 'package:flutter/material.dart';
+import 'package:rive/rive.dart';
+// import 'package:rive/src/rive_core/shapes/shape.dart';
 import 'package:sensors/sensors.dart';
 
 class Palette {
@@ -27,87 +28,53 @@ class Disc extends PositionComponent {
   static Vector2 spawnPos = Vector2(200, 700);
   static Paint red = Palette.red.paint;
   static Paint blue = Palette.blue.paint;
-  static Paint palette = red;
+  static Paint palette = Palette.white.paint;
   Shape shape;
   AccelerometerEvent acc;
   Disc(Shape s) {
     shape = s;
     if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
       accelerometerEvents.listen((AccelerometerEvent event) {
-        // print(event);
         acc = event;
-        // shape.x -= event.x;
-        // shape.y += event.y;
       });
   }
   @override
   void render(Canvas c) {
-    return;
+    // return;
     super.render(c);
     palette.style = PaintingStyle.stroke;
-    //size = 100/life;
-    // palette.color = palette.color.withOpacity(life);
-    var s = size;
-    // if (life > 1) {
-    // double r = max(20, radius - life * 10);
-    // s.x = r;
-    // s.y = r;
-    // }
-    palette.strokeWidth = max(4, 10 - 5 * life);
-    //s.x=s.x.clamp(10,100);
-    c.drawOval(s.toRect(), palette);
-    if (!flying && held)
-      c.drawOval(s.toRect(), Palette.white.withAlpha(100).paint);
-    // r /= 100;
-    // shape?.scaleX = r;
-    // shape?.scaleY = r;
-    //   -300;
+    palette.strokeWidth = 3;
+    // c.drawOval(size.toRect(), palette);
+    if (!flying && held) c.drawOval(size.toRect(), palette);
   }
 
   @override
   void update(double dt) {
-    super.update(dt);
     if (acc != null)
       speed = Offset(speed.dx - acc.x / MyGame.frameRate,
           speed.dy + acc.y / MyGame.frameRate);
     position.x += speed.dx;
     position.y += speed.dy;
-    shape?.x = position.x - spawnPos.x;
-    // MyGame.artboard.x = 0;
-    shape?.y = position.y - spawnPos.y / 1.7;
     angle += dt;
-    if (shape?.scaleY < 1) {
+
+    if (shape.scaleY < 1) {
       shape.scaleY += 1 / (MyGame.frameRate * pow(shape.scaleY, 1));
       shape.scaleY = min(1, shape.scaleY);
     }
-    if (shape?.scaleX < 1) {
+    if (shape.scaleX < 1) {
       shape.scaleX += 1 / (MyGame.frameRate * pow(shape.scaleX, 1));
+      shape.scaleX = min(1, shape.scaleX);
     }
-    shape.scaleX = min(1, shape.scaleX);
-    // if (shape?.scaleY > 1) shape?.scaleY -= 0.1;
-    // position.rotate(dt, center: Vector2(300, 700));
-    // speed.dx -= acc?.x;
-    // position.y += acc?.y;
     collision();
-    // if (speed != null) {
-    // }
+    shape.x = position.x - MyGame.screenSize.x / 2;
+    shape.y = position.y - MyGame.screenSize.y / 2;
     speed *= 0.99;
     if (flying) {
       life -= 0.01;
+      if (life < 0) flying = false;
+    } else if (life < 1) life += 0.01;
 
-      if (life < 0) {
-        flying = false;
-        // position = spawnPos;
-        //  remove();
-        //   add(Disc());
-      }
-    } else if (life < 1) {
-      life += 0.01;
-    }
-    if (flying) {
-      var spawnDist = spawnPos - position;
-      // position += spawnDist / (life * 10);
-    }
+    super.update(dt);
   }
 
   void collision() {
