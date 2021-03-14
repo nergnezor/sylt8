@@ -50,6 +50,7 @@ class Disc extends PositionComponent {
 
   @override
   void update(double dt) {
+    super.update(dt);
     if (acc != null)
       speed = Offset(speed.dx - acc.x / MyGame.frameRate,
           speed.dy + acc.y / MyGame.frameRate);
@@ -67,21 +68,21 @@ class Disc extends PositionComponent {
     }
     collision();
     shape.x = position.x - MyGame.screenSize.x / 2;
-    shape.y = position.y - MyGame.screenSize.y / 2;
+    shape.y = position.y -
+        MyGame.screenSize.y / 2 -
+        shape.fillPath.getBounds().bottom / 2;
     speed *= 0.99;
     if (flying) {
       life -= 0.01;
       if (life < 0) flying = false;
     } else if (life < 1) life += 0.01;
-
-    super.update(dt);
   }
 
   void collision() {
     final h = window.physicalSize.height / window.devicePixelRatio;
     final w = window.physicalSize.width / window.devicePixelRatio;
     Rect size = shape.fillPath.getBounds();
-    int r = size.bottom.toInt();
+    int r = size.bottom ~/ 2;
     if (position.y < r || position.y > h - r) {
       speed = Offset(speed.dx, -speed.dy);
       shape?.scaleY = max(0.1, shape.scaleY - speed.dy.abs() / 20);
@@ -89,7 +90,10 @@ class Disc extends PositionComponent {
     }
     if (position.x < r || position.x > w - r) {
       speed = Offset(-speed.dx, speed.dy);
-      shape?.scaleX = max(0.1, shape.scaleX - speed.dx.abs() / 40);
+      // shape?.scaleX = max(0.1, shape.scaleX - speed.dx.abs() / 40);
+      var vertices = shape.paths.first.vertices;
+      var v = position.x < w / 2 ? vertices[1] : vertices[3];
+      v.x -= speed.dx;
       position.x += speed.dx;
     }
   }

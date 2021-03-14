@@ -80,7 +80,6 @@ class _MyRiveAnimationState extends State<MyRiveAnimation> {
   void _loadRiveFile() async {
     final bytes = await rootBundle.load(riveFileName);
     final file = RiveFile();
-
     if (file.import(bytes)) {
       setState(() => _artboard = file.mainArtboard
         ..addController(
