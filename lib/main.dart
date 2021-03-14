@@ -70,7 +70,6 @@ class _MyRiveAnimationState extends State<MyRiveAnimation> {
   Artboard _artboard;
   // WiperAnimation _wipersController;
   // Flag to turn wipers on and off
-  bool _wipers = false;
 
   @override
   void initState() {
@@ -98,10 +97,11 @@ class _MyRiveAnimationState extends State<MyRiveAnimation> {
             ? Rive(
                 artboard: _artboard,
                 fit: BoxFit.none,
+                useArtboardSize: false,
               )
             : Container(),
         Opacity(
-            opacity: 0.1,
+            opacity: 0.2,
             child: GameWidget(
               game: MyGame(_artboard),
             ))

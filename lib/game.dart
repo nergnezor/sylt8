@@ -4,17 +4,8 @@ import 'package:flame/components.dart' show PositionComponent;
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
 import 'package:rive/rive.dart';
-import 'package:rive/src/rive_core/component.dart';
 import 'disc.dart';
 import 'package:flutter/material.dart';
-
-// void main() {
-//   runApp(
-//     GameWidget(
-//       game: MyGame(),
-//     ),
-//   );
-// }
 
 class MyGame extends BaseGame
     with MultiTouchTapDetector, MultiTouchDragDetector {
@@ -30,12 +21,7 @@ class MyGame extends BaseGame
   MyGame(Artboard a) {
     shape = a?.children?.firstWhere((element) => element.name == 'Ball');
     overlays.add(pauseOverlayIdentifier); // marks "PauseMenu" to be rendered.
-    // artboard = a;
-    // a?.y = 100;
-    // if (a?.runtimeType == Rive) {
-    // (a as Rive).artboard.x = 100;
     artboard = a;
-    // }
     paint.style = PaintingStyle.stroke;
     paint.strokeWidth = 10;
   }
@@ -57,10 +43,6 @@ class MyGame extends BaseGame
 
   @override
   void render(Canvas c) {
-    // c.drawRect(Rect.fromLTWH(0, 0, size.x, size.y), paint);
-    // artboard.= {};
-    // artboard.xChanged(100, 200);
-    // artboard?.draw(c);
     super.render(c);
   }
 
