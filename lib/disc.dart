@@ -32,7 +32,7 @@ class Disc extends PositionComponent {
   AccelerometerEvent acc;
   Disc(Shape s) {
     shape = s;
-    if (!kIsWeb && Platform.isAndroid || Platform.isIOS)
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
       accelerometerEvents.listen((AccelerometerEvent event) {
         // print(event);
         acc = event;
