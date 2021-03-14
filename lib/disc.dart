@@ -42,7 +42,7 @@ class Disc extends PositionComponent {
   }
   @override
   void render(Canvas c) {
-    // return;
+    return;
     super.render(c);
     palette.style = PaintingStyle.stroke;
     //size = 100/life;
@@ -76,8 +76,14 @@ class Disc extends PositionComponent {
     // MyGame.artboard.x = 0;
     shape?.y = position.y - spawnPos.y / 1.7;
     angle += dt;
-    if (shape?.scaleY < 1)
-      shape.scaleY += 1 / (MyGame.frameRate * pow(shape.scaleY, 2));
+    if (shape?.scaleY < 1) {
+      shape.scaleY += 1 / (MyGame.frameRate * pow(shape.scaleY, 1));
+      shape.scaleY = min(1, shape.scaleY);
+    }
+    if (shape?.scaleX < 1) {
+      shape.scaleX += 1 / (MyGame.frameRate * pow(shape.scaleX, 1));
+    }
+    shape.scaleX = min(1, shape.scaleX);
     // if (shape?.scaleY > 1) shape?.scaleY -= 0.1;
     // position.rotate(dt, center: Vector2(300, 700));
     // speed.dx -= acc?.x;
@@ -106,15 +112,17 @@ class Disc extends PositionComponent {
 
   void collision() {
     final h = window.physicalSize.height / window.devicePixelRatio;
+    final w = window.physicalSize.width / window.devicePixelRatio;
     Rect size = shape.fillPath.getBounds();
-    if (position.y < size.bottom || position.y > h + size.top) {
+    int r = size.bottom.toInt();
+    if (position.y < r || position.y > h - r) {
       speed = Offset(speed.dx, -speed.dy);
-      shape?.scaleY = max(0.1, shape.scaleY - speed.dy.abs() / 10);
+      shape?.scaleY = max(0.1, shape.scaleY - speed.dy.abs() / 20);
       position.y += speed.dy;
     }
-    final w = window.physicalSize.width / window.devicePixelRatio;
-    if (position.x < 0 || position.x > w) {
+    if (position.x < r || position.x > w - r) {
       speed = Offset(-speed.dx, speed.dy);
+      shape?.scaleX = max(0.1, shape.scaleX - speed.dx.abs() / 40);
       position.x += speed.dx;
     }
   }
