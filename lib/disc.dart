@@ -25,6 +25,7 @@ class Disc extends PositionComponent {
   var speedX = 1.0;
   bool flying = false;
   var life = 0.1;
+  double time = 0;
   static Vector2 spawnPos = Vector2(200, 700);
   static Paint red = Palette.red.paint;
   static Paint blue = Palette.blue.paint;
@@ -58,6 +59,7 @@ class Disc extends PositionComponent {
   @override
   void update(double dt) {
     super.update(dt);
+    time += dt;
     if (acc != null && !held)
       speed = Offset(speed.dx - acc.x / MyGame.frameRate,
           speed.dy + acc.y / MyGame.frameRate);
@@ -67,6 +69,12 @@ class Disc extends PositionComponent {
     shape.x = position.x - MyGame.screenSize.x / 2;
     shape.y = position.y - MyGame.screenSize.y / 2;
     speed *= 0.99;
+    vertices.forEach((v) {
+      v.inDistance -= sin(time * 2) / 2;
+      v.outDistance -= sin(time * 2) / 2;
+      v.inRotation += sin(time) / 200;
+      v.outRotation += sin(time) / 200;
+    });
   }
 
   void collision() {
