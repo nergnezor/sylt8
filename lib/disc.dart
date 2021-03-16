@@ -76,7 +76,7 @@ class Disc extends PositionComponent {
     var top = vertices[Dir.top.index];
     var bottom = vertices[Dir.bottom.index];
     var right = vertices[Dir.right.index];
-    if (position.y < radius || position.y > h - radius) {
+    if (position.y < -top.y || position.y > h - bottom.y) {
       speed = Offset(speed.dx, -speed.dy);
       bool topEdge = position.y < h / 2;
       top.y += speed.dy * (topEdge ? forces.first : forces.last);
@@ -94,7 +94,7 @@ class Disc extends PositionComponent {
       v.inRotation += 0.01 * (Random().nextDouble() - 0.5);
       v.outRotation += 0.01 * (Random().nextDouble() - 0.5);
     });
-    position.clamp(Vector2(left.x, top.y), MyGame.screenSize.xy);
+    // position.clamp(Vector2(left.x, top.y), MyGame.screenSize.xy);
 
 //  grow
     {
