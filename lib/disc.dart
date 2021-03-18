@@ -70,10 +70,10 @@ class Disc extends PositionComponent {
     shape.y = position.y - MyGame.screenSize.y / 2;
     speed *= 0.99;
     vertices.forEach((v) {
-      v.inDistance -= sin(time * 2) / 2;
-      v.outDistance -= sin(time * 2) / 2;
-      v.inRotation += sin(time) / 200;
-      v.outRotation += sin(time) / 200;
+      v.inDistance += sin(time * 1) / 2;
+      v.outDistance += sin(time * 1) / 2;
+      // v.inRotation += cos(time) / 200;
+      // v.outRotation += cos(time) / 200;
     });
   }
 
@@ -84,6 +84,7 @@ class Disc extends PositionComponent {
     var top = vertices[Dir.top.index];
     var bottom = vertices[Dir.bottom.index];
     var right = vertices[Dir.right.index];
+    // MyGame.wall.toRect().overlaps(shape.paths.first.uiPath..getBounds())
     if (position.y < -top.y || position.y > h - bottom.y) {
       speed = Offset(speed.dx, -speed.dy);
       bool topEdge = position.y < h / 2;
@@ -96,12 +97,7 @@ class Disc extends PositionComponent {
       left.x += speed.dx * (leftEdge ? forces.first : forces.last);
       right.x += speed.dx * (leftEdge ? forces.last : forces.first);
     }
-    vertices.forEach((v) {
-      v.inDistance += 1 * (Random().nextDouble() - 0.5);
-      v.outDistance += 1 * (Random().nextDouble() - 0.5);
-      v.inRotation += 0.01 * (Random().nextDouble() - 0.5);
-      v.outRotation += 0.01 * (Random().nextDouble() - 0.5);
-    });
+
     // position.clamp(Vector2(left.x, top.y), MyGame.screenSize.xy);
 
 //  grow
