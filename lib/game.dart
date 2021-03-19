@@ -30,8 +30,8 @@ class MyGame extends BaseGame
     shape = a.children.firstWhere((element) => element.name == 'Ball');
     shape.scaleX = shape.scaleY = 0.7;
     ice = a.children.firstWhere((element) => element.name == 'Ice');
-    ice.scaleX = 0.4;
-    ice.scaleY = 0.5;
+    // ice.scaleX = 0.4;
+    // ice.scaleY = 0.5;
     iceHiglight = ice.strokes.last.children.last;
     a.children.forEach((element) {
       print({element, element.name});
@@ -64,28 +64,65 @@ class MyGame extends BaseGame
     iceHiglight.start = 0.01;
     iceHiglight.end = 0.02;
     iceHiglight.stroke.thickness += sin(dt * 1000) / 10;
-
-    ice.paths.single.uiPath.relativeLineTo(shape.x, shape.y);
+    var verts = ice.paths.single.vertices;
+    verts.forEach((v) {
+      if (v.x.abs() * ice.scaleX > canvasSize.x / 2) {
+        ice.scaleX *= 0.99;
+      }
+      if (v.y.abs() * ice.scaleY > canvasSize.y / 2) {
+        ice.scaleY *= 0.99;
+      }
+    });
+    // ic
+    // ice.strokes.last.
+    for (var i = 0; i < verts.length; i++) {
+      final step = 0.1;
+      var j = (i + 1) % verts.length;
+      Offset o = Offset(verts[j].x - verts[i].x, verts[j].y - verts[i].y);
+      for (num k = 0; k < 1; k += 0.1) {
+        // print(verts[i].x + k * o.dx);
+        // print(verts[i].y + k * o.dy);
+      }
+    }
   }
 
   @override
   void render(Canvas c) {
-    // super.render(c);
+    super.render(c);
     // c.drawPath(shape.paths.first.uiPath, paint);
     // artboard.draw(c);
     // artboard.draw(c);
+    var verts = ice.paths.single.vertices;
+    for (var i = 0; i < verts.length; i++) {
+      final step = 0.1;
+      var j = (i + 1) % verts.length;
+      Offset o = Offset((verts[j].x - verts[i].x) * ice.scaleX,
+          (verts[j].y - verts[i].y) * ice.scaleY);
+      for (double k = 0; k < 1; k += 0.1) {
+        c.drawCircle(
+            Offset(verts[i].x * ice.scaleX + canvasSize.x / 2,
+                    verts[i].y * ice.scaleY + canvasSize.y / 2) +
+                o * k,
+            ice.strokes.first.thickness / 2,
+            paint);
+        // print(verts[i].x + k * o.dx);
+        // print(verts[i].y + k * o.dy);
+      }
+    }
   }
 
   @override
   Future<void> onLoad() async {
+    if (ice == null) return;
     if (shape != null) add(Disc(shape));
-    double pad = 100;
     // ice?.x = ice.localBounds.topLeft.values.first / 2;
-    ice?.x = -size.x * (1 - ice.scaleX);
+    // ice?.x = -size.x * (1 - ice.scaleX);
+    print(canvasSize);
   }
 
   @override
   void onResize(Vector2 canvasSize) {
+    ice?.scaleX = ice?.scaleY = 10;
     screenSize = canvasSize;
     Disc.spawnPos.x = screenSize.x / 2;
     Disc.spawnPos.y = 5 * screenSize.y / 6;

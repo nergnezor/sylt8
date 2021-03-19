@@ -100,7 +100,7 @@ class _MyRiveAnimationState extends State<MyRiveAnimation> {
               )
             : Container(),
         Opacity(
-            opacity: 0.0,
+            opacity: 0.05,
             child: GameWidget(
               game: MyGame(_artboard),
             ))

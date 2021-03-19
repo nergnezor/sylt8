@@ -109,6 +109,9 @@ class Disc extends PositionComponent {
       bottom.y = (bottom.y + d).clamp(v.start, v.end);
       right.x = (right.x + d).clamp(v.start, v.end);
     }
+
+    // wall
+    // MyGame.ice.
   }
 
   @override
