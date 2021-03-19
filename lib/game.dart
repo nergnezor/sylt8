@@ -94,20 +94,25 @@ class MyGame extends BaseGame
     // artboard.draw(c);
     var verts = ice.paths.single.vertices;
     for (var i = 0; i < verts.length; i++) {
-      final step = 0.1;
       var j = (i + 1) % verts.length;
-      Offset o = Offset((verts[j].x - verts[i].x) * ice.scaleX,
+      Vector2 o = Vector2((verts[j].x - verts[i].x) * ice.scaleX,
           (verts[j].y - verts[i].y) * ice.scaleY);
       for (double k = 0; k < 1; k += 0.1) {
-        c.drawCircle(
-            Offset(verts[i].x * ice.scaleX + canvasSize.x / 2,
-                    verts[i].y * ice.scaleY + canvasSize.y / 2) +
-                o * k,
-            ice.strokes.first.thickness / 2,
-            paint);
-        // print(verts[i].x + k * o.dx);
-        // print(verts[i].y + k * o.dy);
+        var start = Vector2(canvasSize.x / 2 + verts[i].x * ice.scaleX,
+            canvasSize.y / 2 + verts[i].y * ice.scaleY);
+        Vector2 wallPoint = start + o * k;
+        shape.paths.single.vertices.forEach((v) {
+          if (wallPoint.distanceTo(Vector2(
+                  shape.x + v.x * shape.scaleX + canvasSize.x / 2,
+                  shape.y + v.y * shape.scaleY + canvasSize.y / 2)) <
+              100) {
+            c.drawCircle(wallPoint.toOffset(), 50, paint);
+          }
+        });
+        //   print(verts[i].x);
       }
+      //   // print(verts[i].y + k * o.dy);
+      // });
     }
   }
 
