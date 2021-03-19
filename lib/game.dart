@@ -28,7 +28,10 @@ class MyGame extends BaseGame
   MyGame(Artboard a) {
     if (a == null) return;
     shape = a.children.firstWhere((element) => element.name == 'Ball');
+    shape.scaleX = shape.scaleY = 0.7;
     ice = a.children.firstWhere((element) => element.name == 'Ice');
+    ice.scaleX = 0.4;
+    ice.scaleY = 0.5;
     iceHiglight = ice.strokes.last.children.last;
     a.children.forEach((element) {
       print({element, element.name});
@@ -61,6 +64,8 @@ class MyGame extends BaseGame
     iceHiglight.start = 0.01;
     iceHiglight.end = 0.02;
     iceHiglight.stroke.thickness += sin(dt * 1000) / 10;
+
+    ice.paths.single.uiPath.relativeLineTo(shape.x, shape.y);
   }
 
   @override
@@ -69,22 +74,14 @@ class MyGame extends BaseGame
     // c.drawPath(shape.paths.first.uiPath, paint);
     // artboard.draw(c);
     // artboard.draw(c);
-    // c.drawRect(wall?.toRect(), paint);
   }
 
   @override
   Future<void> onLoad() async {
     if (shape != null) add(Disc(shape));
     double pad = 100;
-    wall.setByRect(
-      Rect.fromLTRB(
-        pad,
-        pad,
-        viewport.canvasSize.x - pad,
-        viewport.canvasSize.y - pad,
-      ),
-    );
-    add(wall);
+    // ice?.x = ice.localBounds.topLeft.values.first / 2;
+    ice?.x = -size.x * (1 - ice.scaleX);
   }
 
   @override

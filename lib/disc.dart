@@ -70,8 +70,8 @@ class Disc extends PositionComponent {
     shape.y = position.y - MyGame.screenSize.y / 2;
     speed *= 0.99;
     vertices.forEach((v) {
-      v.inDistance += sin(time * 1) / 2;
-      v.outDistance += sin(time * 1) / 2;
+      v.inDistance += sin(time * 1) / 4;
+      v.outDistance += sin(time * 1) / 4;
       // v.inRotation += cos(time) / 200;
       // v.outRotation += cos(time) / 200;
     });
