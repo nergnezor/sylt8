@@ -3,7 +3,7 @@
 
 import 'dart:async';
 
-import 'package:flingjammer/main.dart' as entrypoint;
+import 'package:homepage/main.dart' as entrypoint;
 
 typedef _UnaryFunction = dynamic Function(List<String> args);
 Future<void> main() async {
