@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame_rive/flame_rive.dart';
 import 'package:flutter/material.dart';
+import 'package:flame_forge2d/flame_forge2d.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,28 +27,27 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class RiveExampleGame extends FlameGame with HasTappables {
-  // @override
-  // Color backgroundColor() {
-  //   return const Color(0xFFFFFFFF);
-  // }
-
+class RiveExampleGame extends Forge2DGame with HasTappables {
   @override
   Future<void> onLoad() async {
     final skillsArtboard = await loadArtboard(RiveFile.asset('nerg.riv'));
-    add(SkillsAnimationComponent(skillsArtboard, size: size));
+
+    add(SkillsAnimationComponent(skillsArtboard, camera, size: size));
   }
 }
 
 class SkillsAnimationComponent extends RiveComponent with Tappable {
-  SkillsAnimationComponent(Artboard artboard, {required Vector2 size})
-      : super(artboard: artboard, size: size);
+  final Camera camera;
+
+  SkillsAnimationComponent(Artboard artboard, this.camera,
+      {required Vector2 size})
+      : super(artboard: artboard, size: Vector2(size.x, size.y));
   SMIInput<double>? _levelInput;
   @override
   void onLoad() {
     final controller = StateMachineController.fromArtboard(
       artboard,
-      "Designer's Test",
+      "State Machine 1",
     );
     if (controller != null) {
       artboard.addController(controller);
@@ -56,6 +58,9 @@ class SkillsAnimationComponent extends RiveComponent with Tappable {
 
   @override
   bool onTapDown(TapDownInfo info) {
+    // camera shake
+    log('tapped');
+    camera.shake(duration: 0.5, intensity: 0.5);
     final levelInput = _levelInput;
     if (levelInput == null) {
       return false;
