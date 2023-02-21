@@ -20,6 +20,7 @@ class MyRiveAnimation extends StatelessWidget {
         child: RiveAnimation.asset(
           'nerg.riv',
           stateMachines: ['State Machine 1'],
+          artboard: "alla",
           fit: BoxFit.cover,
         ),
       ),
