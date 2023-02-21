@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
 class RiveExampleGame extends Forge2DGame with HasTappables {
   @override
   Future<void> onLoad() async {
-    final skillsArtboard = await loadArtboard(RiveFile.asset('nerg.riv'));
+    final skillsArtboard = await loadArtboard(RiveFile.asset('nerg.riv'), 'alla');
 
     add(SkillsAnimationComponent(skillsArtboard, camera, size: size));
   }
