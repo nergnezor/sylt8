@@ -5,3 +5,5 @@ build
 .dart_tool
 nerg.iml
 .flutter-plugins*
+.metadata
+analysis_options.yaml
