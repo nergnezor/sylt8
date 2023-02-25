@@ -9,9 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # rive: ^0.10.2
-  flame_rive: ^1.6.0
-  flame_forge2d: ^0.12.5
+  rive: ^0.10.2
+  # flame_rive: ^1.6.0
+  # flame_forge2d: ^0.12.5
 dev_dependencies:
 
 flutter:
