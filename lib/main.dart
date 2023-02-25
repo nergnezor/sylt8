@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:math';
 
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
 class RiveExampleGame extends Forge2DGame with HasTappables {
   @override
   Color backgroundColor() {
-    return Color.fromARGB(30, 127, 127, 127);
+    return Color.fromARGB(64, 128, 128, 128);
   }
 
   @override
@@ -42,14 +42,13 @@ class RiveExampleGame extends Forge2DGame with HasTappables {
   }
 }
 
-class SkillsAnimationComponent extends RiveComponent {
-  // with Tappable {
+class SkillsAnimationComponent extends RiveComponent with Tappable {
   final Camera camera;
 
   SkillsAnimationComponent(Artboard artboard, this.camera,
       {required Vector2 size})
       : super(artboard: artboard, size: Vector2(size.x, size.y));
-  SMIInput<double>? _levelInput;
+  SMITrigger? triggerInput;
   @override
   void onLoad() {
     final controller = StateMachineController.fromArtboard(
@@ -58,22 +57,22 @@ class SkillsAnimationComponent extends RiveComponent {
     );
     if (controller != null) {
       artboard.addController(controller);
-      _levelInput = controller.findInput<double>('Level');
-      _levelInput?.value = 0;
+      triggerInput = controller.findSMI("scale") as SMITrigger;
     }
   }
 
-  // @override
-  // bool onTapDown(TapDownInfo info) {
-  //   super.onTapDown(info);
-  //   // camera shake
-  //   log('tapped');
-  //   camera.shake(duration: 0.5, intensity: 0.5);
-  //   final levelInput = _levelInput;
-  //   if (levelInput == null) {
-  //     return false;
-  //   }
-  //   levelInput.value = (levelInput.value + 1) % 3;
-  //   return true;
-  // }
+  @override
+  bool onTapDown(TapDownInfo info) {
+    camera.shake(duration: 0.5, intensity: 0.5);
+    final p = info.eventPosition.game;
+    print(p);
+    print(size);
+    if (max((p.y - size.y / 2).abs(), (p.x - size.x / 2).abs()) < 10) {
+      triggerInput?.fire();
+      print('tapped on the logo');
+    } else {
+      print('tapped outside');
+    }
+    return true;
+  }
 }
