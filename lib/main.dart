@@ -29,6 +29,11 @@ class _MyAppState extends State<MyApp> {
 
 class RiveExampleGame extends Forge2DGame with HasTappables {
   @override
+  Color backgroundColor() {
+    return Color.fromARGB(30, 0, 0, 0);
+  }
+
+  @override
   Future<void> onLoad() async {
     final skillsArtboard =
         await loadArtboard(RiveFile.asset('nerg.riv'), artboardName: 'alla');
@@ -59,6 +64,7 @@ class SkillsAnimationComponent extends RiveComponent with Tappable {
 
   @override
   bool onTapDown(TapDownInfo info) {
+    super.onTapDown(info);
     // camera shake
     log('tapped');
     camera.shake(duration: 0.5, intensity: 0.5);
