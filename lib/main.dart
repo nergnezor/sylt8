@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
 class RiveExampleGame extends Forge2DGame with HasTappables {
   @override
   Color backgroundColor() {
-    return Color.fromARGB(30, 0, 0, 0);
+    return Color.fromARGB(30, 127, 127, 127);
   }
 
   @override
@@ -42,7 +42,8 @@ class RiveExampleGame extends Forge2DGame with HasTappables {
   }
 }
 
-class SkillsAnimationComponent extends RiveComponent with Tappable {
+class SkillsAnimationComponent extends RiveComponent {
+  // with Tappable {
   final Camera camera;
 
   SkillsAnimationComponent(Artboard artboard, this.camera,
@@ -62,17 +63,17 @@ class SkillsAnimationComponent extends RiveComponent with Tappable {
     }
   }
 
-  @override
-  bool onTapDown(TapDownInfo info) {
-    super.onTapDown(info);
-    // camera shake
-    log('tapped');
-    camera.shake(duration: 0.5, intensity: 0.5);
-    final levelInput = _levelInput;
-    if (levelInput == null) {
-      return false;
-    }
-    levelInput.value = (levelInput.value + 1) % 3;
-    return true;
-  }
+  // @override
+  // bool onTapDown(TapDownInfo info) {
+  //   super.onTapDown(info);
+  //   // camera shake
+  //   log('tapped');
+  //   camera.shake(duration: 0.5, intensity: 0.5);
+  //   final levelInput = _levelInput;
+  //   if (levelInput == null) {
+  //     return false;
+  //   }
+  //   levelInput.value = (levelInput.value + 1) % 3;
+  //   return true;
+  // }
 }
