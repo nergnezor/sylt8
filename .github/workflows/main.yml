@@ -32,7 +32,8 @@ jobs:
         build_dir: build/web
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+        
+    - run: flutter create --platforms=android .
     - uses: actions/setup-java@v1
       with:
         java-version: '12.x'
