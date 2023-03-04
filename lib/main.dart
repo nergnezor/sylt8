@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:rive/rive.dart';
 
 void main() => runApp(MaterialApp(
@@ -15,15 +17,28 @@ void main() => runApp(MaterialApp(
 class MyRiveAnimation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: RiveAnimation.asset(
-          'nerg.riv',
-          stateMachines: ['State Machine 1'],
-          artboard: "alla",
-          fit: BoxFit.cover,
-        ),
-      ),
+    return Scaffold(
+      body: Stack(children: [
+        FutureBuilder(
+            future: rootBundle.loadString("blog.md"),
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              if (snapshot.hasData) {
+                return Markdown(data: snapshot.data!);
+              }
+
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }),
+        Center(
+          child: RiveAnimation.asset(
+            'nerg.riv',
+            stateMachines: ['State Machine 1'],
+            artboard: "alla",
+            fit: BoxFit.cover,
+          ),
+        )
+      ]),
     );
   }
 }

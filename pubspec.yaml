@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_markdown: ^0.6.14
   rive: ^0.10.2
   # flame_rive: ^1.6.0
   # flame_forge2d: ^0.12.5
@@ -17,3 +18,4 @@ dev_dependencies:
 flutter:
   assets:
     - nerg.riv
+    - blog.md
