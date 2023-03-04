@@ -20,7 +20,7 @@ class MyRiveAnimation extends StatelessWidget {
     return Scaffold(
       body: Stack(children: [
         FutureBuilder(
-            future: rootBundle.loadString("blog.md"),
+            future: rootBundle.loadString("README.md"),
             builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
               if (snapshot.hasData) {
                 return Markdown(data: snapshot.data!);
