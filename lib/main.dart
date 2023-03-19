@@ -62,7 +62,7 @@ class MyRiveAnimation extends StatelessWidget {
     final controller =
         StateMachineController.fromArtboard(artboard, 'State Machine 1',
             onStateChange: (stateMachineName, stateName) => {
-                  if (stateName == 'zoom') showText = true,
+                  if (stateName == 'zoom') {showText = true, print('zoom')},
                   print(
                       'State machine $stateMachineName changed to state $stateName'),
                 });
