@@ -1,4 +1,1 @@
-## links
-- 🙂😅❤️
-- www.dn.se
--	[dn](https://www.dn.se)
+– Ni har inte betalt rymdskatt!
