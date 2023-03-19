@@ -14,7 +14,14 @@ void main() => runApp(MaterialApp(
       home: MyRiveAnimation(),
     ));
 
-class MyRiveAnimation extends StatelessWidget {
+class MyRiveAnimation extends StatefulWidget {
+  MyRiveAnimation({super.key});
+
+  @override
+  State<MyRiveAnimation> createState() => _MyRiveAnimationState();
+}
+
+class _MyRiveAnimationState extends State<MyRiveAnimation> {
   bool showText = false;
 
   @override
@@ -24,22 +31,19 @@ class MyRiveAnimation extends StatelessWidget {
         if (showText)
           Align(
             alignment: Alignment.bottomCenter,
-            child: FractionallySizedBox(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: 100,
-                width: 200,
-                child: FutureBuilder(
-                    future: rootBundle.loadString("README.md"),
-                    builder:
-                        (BuildContext context, AsyncSnapshot<String> snapshot) {
-                      if (snapshot.hasData) {
-                        return Markdown(data: snapshot.data!);
-                      }
+            child: Container(
+              height: 100,
+              width: 200,
+              child: FutureBuilder(
+                  future: rootBundle.loadString("README.md"),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<String> snapshot) {
+                    if (snapshot.hasData) {
+                      return Markdown(data: snapshot.data!);
+                    }
 
-                      return Center();
-                    }),
-              ),
+                    return Center();
+                  }),
             ),
           ),
         Center(
@@ -55,21 +59,16 @@ class MyRiveAnimation extends StatelessWidget {
     );
   }
 
-  SMITrigger? planetHit;
-
   void _onRiveInit(Artboard artboard) {
-    // Get State Machine Controller for the state machine called "bumpy"
     final controller =
         StateMachineController.fromArtboard(artboard, 'State Machine 1',
-            onStateChange: (stateMachineName, stateName) => {
-                  if (stateName == 'zoom') {showText = true, print('zoom')},
-                  print(
-                      'State machine $stateMachineName changed to state $stateName'),
-                });
+            onStateChange: (stateMachineName, stateName) => setState(() {
+                  print(stateName);
+                  if (stateName == 'ExitState') {
+                    return;
+                  }
+                  showText = stateName == 'zoom';
+                }));
     artboard.addController(controller!);
-    // Get a reference to the "bump" state machine input
-    // planetHit = controller.findInput<bool>('planetHit') as SMITrigger;
-    // React to the "bump" input being triggered
-    // planetHit.planetHit!.addCallback((_) => print('planetHit triggered'));
   }
 }
